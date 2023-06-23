@@ -1,101 +1,106 @@
 import {HF_ACCESS_TOKEN, OLD_MODELS} from "$env/static/private";
 import {z} from "zod";
 
-const MODELS = `[
-  {
-    "name": "OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5",
-    "datasetName": "OpenAssistant/oasst1",
-    "description": "A good alternative to chat GPT",
-    "websiteUrl": "https://open-assistant.io/",
-    "userMessageToken": "<|prompter|>",
-    "assistantMessageToken": "<|assistant|>",
-    "messageEndToken": "</s>",
-    "preprompt": "Below are a series of dialogues between various people and an AI assistant. The AI tries to be helpful, polite, honest, sophisticated, emotionally aware, and humble-but-knowledgeable. The assistant is happy to help with almost anything, and will do its best to understand exactly what is needed. It also tries to avoid giving false or misleading information, and it caveats when it isn't entirely sure about the right answer. That said, the assistant is practical and really does its best, and doesn't let caution get too much in the way of being useful.\n-----\n",
-    "promptExamples": [
-      {
-        "title": "Write an email from bullet list",
-        "prompt": "As a restaurant owner, write a professional email to the supplier to get these products every week: \n\n- Wine (x10)\n- Eggs (x24)\n- Bread (x12)"
-      }, {
-        "title": "Code a snake game",
-        "prompt": "Code a basic snake game in python, give explanations for each step."
-      }, {
-        "title": "Assist in a task",
-        "prompt": "How do I make a delicious lemon cheesecake?"
-      }
-    ],
-    "parameters": {
-      "temperature": 0.9,
-      "top_p": 0.95,
-      "repetition_penalty": 1.2,
-      "top_k": 50,
-      "truncate": 1000,
-      "max_new_tokens": 1024
-    }
-  },
-
-   {
-              "name": "HuggingFaceH4/starchat-beta",
-              "datasetName": "bigcode/starcoderdata",
-              "description": "A good alternative to chat GPT",
-              "websiteUrl": "https://www.bigcode-project.org/",
-              "userMessageToken": "<|prompter|>",
-              "assistantMessageToken": "<|assistant|>",
-              "messageEndToken": "</s>",
-              "preprompt": "Below are a series of dialogues between various people and an AI assistant. The AI tries to be helpful, polite, honest, sophisticated, emotionally aware, and humble-but-knowledgeable. The assistant is happy to help with almost anything, and will do its best to understand exactly what is needed. It also tries to avoid giving false or misleading information, and it caveats when it isn't entirely sure about the right answer. That said, the assistant is practical and really does its best, and doesn't let caution get too much in the way of being useful.\n-----\n",
-              "promptExamples": [
-                {
-                  "title": "Write an email from bullet list",
-                  "prompt": "As a restaurant owner, write a professional email to the supplier to get these products every week: \n\n- Wine (x10)\n- Eggs (x24)\n- Bread (x12)"
-                }, {
-                  "title": "Code a snake game",
-                  "prompt": "Code a basic snake game in python, give explanations for each step."
-                }, {
-                  "title": "Assist in a task",
-                  "prompt": "How do I make a delicious lemon cheesecake?"
-                }
-              ],
-              "parameters": {
-                "temperature": 0.9,
-                "top_p": 0.95,
-                "repetition_penalty": 1.2,
-                "top_k": 50,
-                "truncate": 1000,
-                "max_new_tokens": 1024
-              }
-            },
-
+const MODELS = [
+    {
+        name: "OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5",
+        datasetName: "OpenAssistant/oasst1",
+        description: "A good alternative to chat GPT",
+        websiteUrl: "https://open-assistant.io/",
+        userMessageToken: "",
+        assistantMessageToken: "",
+        messageEndToken: "</s>",
+        preprompt: "Below are a series of dialogues between various people and an AI assistant. The AI tries to be helpful, polite, honest, sophisticated, emotionally aware, and humble-but-knowledgeable. The assistant is happy to help with almost anything, and will do its best to understand exactly what is needed. It also tries to avoid giving false or misleading information, and it caveats when it isn't entirely sure about the right answer. That said, the assistant is practical and really does its best, and doesn't let caution get too much in the way of being useful.\n-----\n",
+        promptExamples: [
             {
-                "name": "timdettmers/guanaco-33b-merged",
-                "datasetName": "timdettmers/openassistant-guanaco",
-                "description": "A good alternative to chat GPT",
-                "websiteUrl": "https://timdettmers.com/",
-                "userMessageToken": "<|prompter|>",
-                "assistantMessageToken": "<|assistant|>",
-                "messageEndToken": "</s>",
-                "preprompt": "Below are a series of dialogues between various people and an AI assistant. The AI tries to be helpful, polite, honest, sophisticated, emotionally aware, and humble-but-knowledgeable. The assistant is happy to help with almost anything, and will do its best to understand exactly what is needed. It also tries to avoid giving false or misleading information, and it caveats when it isn't entirely sure about the right answer. That said, the assistant is practical and really does its best, and doesn't let caution get too much in the way of being useful.\n-----\n",
-                "promptExamples": [
-                  {
-                    "title": "Write an email from bullet list",
-                    "prompt": "As a restaurant owner, write a professional email to the supplier to get these products every week: \n\n- Wine (x10)\n- Eggs (x24)\n- Bread (x12)"
-                  }, {
-                    "title": "Code a snake game",
-                    "prompt": "Code a basic snake game in python, give explanations for each step."
-                  }, {
-                    "title": "Assist in a task",
-                    "prompt": "How do I make a delicious lemon cheesecake?"
-                  }
-                ],
-                "parameters": {
-                  "temperature": 0.9,
-                  "top_p": 0.95,
-                  "repetition_penalty": 1.2,
-                  "top_k": 50,
-                  "truncate": 1000,
-                  "max_new_tokens": 1024
-                }
-              }
-]`;
+                title: "Write an email from bullet list",
+                prompt: "As a restaurant owner, write a professional email to the supplier to get these products every week: \n\n- Wine (x10)\n- Eggs (x24)\n- Bread (x12)"
+            },
+            {
+                title: "Code a snake game",
+                prompt: "Code a basic snake game in python, give explanations for each step."
+            },
+            {
+                title: "Assist in a task",
+                prompt: "How do I make a delicious lemon cheesecake?"
+            }
+        ],
+        parameters: {
+            temperature: 0.9,
+            top_p: 0.95,
+            repetition_penalty: 1.2,
+            top_k: 50,
+            truncate: 1000,
+            max_new_tokens: 1024
+        }
+    },
+    {
+        name: "HuggingFaceH4/starchat-beta",
+        datasetName: "bigcode/starcoderdata",
+        description: "A good alternative to chat GPT",
+        websiteUrl: "https://www.bigcode-project.org/",
+        userMessageToken: "",
+        assistantMessageToken: "",
+        messageEndToken: "</s>",
+        preprompt: "Below are a series of dialogues between various people and an AI assistant. The AI tries to be helpful, polite, honest, sophisticated, emotionally aware, and humble-but-knowledgeable. The assistant is happy to help with almost anything, and will do its best to understand exactly what is needed. It also tries to avoid giving false or misleading information, and it caveats when it isn't entirely sure about the right answer. That said, the assistant is practical and really does its best, and doesn't let caution get too much in the way of being useful.\n-----\n",
+        promptExamples: [
+            {
+                title: "Write an email from bullet list",
+                prompt: "As a restaurant owner, write a professional email to the supplier to get these products every week: \n\n- Wine (x10)\n- Eggs (x24)\n- Bread (x12)"
+            },
+            {
+                title: "Code a snake game",
+                prompt: "Code a basic snake game in python, give explanations for each step."
+            },
+            {
+                title: "Assist in a task",
+                prompt: "How do I make a delicious lemon cheesecake?"
+            }
+        ],
+        parameters: {
+            temperature: 0.9,
+            top_p: 0.95,
+            repetition_penalty: 1.2,
+            top_k: 50,
+            truncate: 1000,
+            max_new_tokens: 1024
+        }
+    },
+    {
+        name: "timdettmers/guanaco-33b-merged",
+        datasetName: "timdettmers/openassistant-guanaco",
+        description: "A good alternative to chat GPT",
+        websiteUrl: "https://timdettmers.com/",
+        userMessageToken: "",
+        assistantMessageToken: "",
+        messageEndToken: "</s>",
+        preprompt: "Below are a series of dialogues between various people and an AI assistant. The AI tries to be helpful, polite, honest, sophisticated, emotionally aware, and humble-but-knowledgeable. The assistant is happy to help with almost anything, and will do its best to understand exactly what is needed. It also tries to avoid giving false or misleading information, and it caveats when it isn't entirely sure about the right answer. That said, the assistant is practical and really does its best, and doesn't let caution get too much in the way of being useful.\n-----\n",
+        promptExamples: [
+            {
+                title: "Write an email from bullet list",
+                prompt: "As a restaurant owner, write a professional email to the supplier to get these products every week: \n\n- Wine (x10)\n- Eggs (x24)\n- Bread (x12)"
+            },
+            {
+                title: "Code a snake game",
+                prompt: "Code a basic snake game in python, give explanations for each step."
+            },
+            {
+                title: "Assist in a task",
+                prompt: "How do I make a delicious lemon cheesecake?"
+            }
+        ],
+        parameters: {
+            temperature: 0.9,
+            top_p: 0.95,
+            repetition_penalty: 1.2,
+            top_k: 50,
+            truncate: 1000,
+            max_new_tokens: 1024
+        }
+    }
+];
 
+// @ts-ignore
 const modelsRaw = z
     .array(
         z.object({
