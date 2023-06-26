@@ -14,7 +14,9 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	kit: {
-		adapter: adapter(),
+		adapter: adapter({
+			runtime: 'nodejs18.x'
+		}),
 
 		paths: {
 			base: process.env.APP_BASE || "",
