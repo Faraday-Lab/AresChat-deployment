@@ -71,6 +71,11 @@
 		class="dark:via-gray-80 pointer-events-none absolute inset-x-0 bottom-0 z-0 mx-auto flex w-full max-w-3xl flex-col items-center justify-center bg-gradient-to-t from-white via-white/80 to-white/0 px-3.5 py-4 dark:border-gray-800 dark:from-gray-900 dark:to-gray-900/0 max-md:border-t max-md:bg-white max-md:dark:bg-gray-900 sm:px-5 md:py-8 xl:max-w-4xl [&>*]:pointer-events-auto"
 	>
 		<div class="flex w-full pb-3 max-md:justify-between">
+			<div class="display">
+				<div class="controllers">
+
+				</div>
+			</div>
 			{#if settings?.searchEnabled}
 				<WebSearchToggle />
 			{/if}
@@ -123,17 +128,156 @@
 			</div>
 			<div class="flex space-x-3 mr-9 mt-1">
 				<div>
-					<input type="file" style="display:none">
-						<button type="button">
+					<form action="#" method="GET" enctype="multipart/form-data" id="fileUploadForm">
+						<input type="file" name="fileUpload" id="fileUpload" style="display: none;">
+						<button type="button" onclick="uploadFilePDF()">
     						<img class="h-4 w-4" src="../chatui/file.png" alt="upload a file">
 						</button>
+					</form>
+
+					<script defer>
+						function uploadFilePDF() {
+							document.getElementById('fileUpload').click();
+						}
+
+						document.getElementById('fileUpload').addEventListener('change', function() {
+							document.getElementById('fileUploadForm').submit(); // Automatically submit the form when file is selected
+						});
+					</script>
 				</div>
 
 				<div>
-					<input type="micro" style="display:none">
-						<button type="button">
+					<input style="display:none">
+						<button type="button" onclick="vRecorder()">
 							<img class="h-4 w-4" src="../chatui/mic.png" alt="open the mic">
 						</button>
+
+					<script defer>
+						function vRecorder() {
+							// collect DOMs
+							const display = document.querySelector('.display')
+							const controllerWrapper = document.querySelector('.controllers')
+
+							const State = ['Initial', 'Record', 'Download']
+							let stateIndex = 0
+							let mediaRecorder, chunks = [], audioURL = ''
+
+							// mediaRecorder setup for audio
+							if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+								console.log('mediaDevices supported..')
+
+								navigator.mediaDevices.getUserMedia({
+									audio: true
+								}).then(stream => {
+									mediaRecorder = new MediaRecorder(stream)
+
+									mediaRecorder.ondataavailable = (e) => {
+										chunks.push(e.data)
+									}
+
+									mediaRecorder.onstop = () => {
+										const blob = new Blob(chunks, {'type': 'audio/ogg; codecs=opus'})
+										chunks = []
+										audioURL = window.URL.createObjectURL(blob)
+										document.querySelector('audio').src = audioURL
+										console.log(audioURL)
+
+									}
+								}).catch(error => {
+									console.log('Following error has occured : ',error)
+								})
+							}else{
+								stateIndex = ''
+								application(stateIndex)
+							}
+
+							const clearDisplay = () => {
+								display.textContent = ''
+							}
+
+							const clearControls = () => {
+								controllerWrapper.textContent = ''
+							}
+
+							const record = () => {
+								stateIndex = 1
+								mediaRecorder.start()
+								application(stateIndex)
+							}
+
+							const stopRecording = () => {
+								stateIndex = 2
+								mediaRecorder.stop()
+								application(stateIndex)
+							}
+
+							const downloadAudio = () => {
+								const downloadLink = document.createElement('a')
+								downloadLink.href = audioURL
+								downloadLink.setAttribute('download', 'audio')
+								downloadLink.click()
+							}
+
+							const addButton = (id, funString, text) => {
+								const btn = document.createElement('button')
+								btn.id = id
+								btn.setAttribute('onclick', funString)
+								btn.textContent = text
+								controllerWrapper.append(btn)
+							}
+
+							const addMessage = (text) => {
+								const msg = document.createElement('p')
+								msg.textContent = text
+								display.append(msg)
+							}
+
+
+							const addAudio = () => {
+								const audio = document.createElement('audio')
+								audio.controls = true
+								audio.src = audioURL
+								display.append(audio)
+							}
+
+							const application = (index) => {
+								switch (State[index]) {
+									case 'Initial':
+										clearDisplay()
+										clearControls()
+
+										addButton('record', 'record()', 'Start Recording')
+										break;
+
+									case 'Record':
+										clearDisplay()
+										clearControls()
+
+										addMessage('Recording...')
+										addButton('stop', 'stopRecording()', 'Stop Recording')
+										break
+
+									case 'Download':
+										clearControls()
+										clearDisplay()
+
+										addAudio()
+										addButton('record', 'record()', 'Record Again')
+										break
+
+									default:
+										clearControls()
+										clearDisplay()
+
+										addMessage('Your browser does not support mediaDevices')
+										break;
+								}
+
+							}
+
+							application(stateIndex)
+						}
+					</script>
 				</div>
 			</div>
 		</form>
