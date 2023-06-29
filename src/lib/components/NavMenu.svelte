@@ -28,17 +28,16 @@
 	</a>
 	<div class="flex flex-col gap-2"><a
 			href={`${base}/`}
-			class="flex rounded-lg border bg-white px-2 py-0.5 text-center shadow-sm hover:shadow-none dark:border-gray-600 dark:bg-gray-700"
-	>
-		New Chat
+			class="flex flex-row items-center rounded-lg border bg-white px-2 py-0.5 text-center shadow-sm hover:shadow-none dark:border-gray-600 dark:bg-gray-700"
+	><img src="../chatui/robot.svg" alt="locket" class="w-4 h-4 mr-1">
+		New AI Chat
 	</a>
 		<a
 				href={`${base}/`}
-				class="flex rounded-lg border bg-white px-2 py-0.5 text-center shadow-sm hover:shadow-none dark:border-gray-600 dark:bg-gray-700"
+				class="flex rounded-lg border bg-white px-2 py-0.5 text-center shadow-sm hover:shadow-none dark:border-gray-600 dark:bg-gray-700 flex-row items-center"
 		>
-			New Private Chat
+			<img src="../chatui/lock.svg" alt="locket" class="w-4 h-4 mr-1">New Private Chat
 		</a></div>
-
 </div>
 <div
 	class="scrollbar-custom flex flex-col gap-1 overflow-y-auto rounded-r-xl bg-gradient-to-l from-gray-50 px-3 pb-3 pt-2 dark:from-gray-800/30"
