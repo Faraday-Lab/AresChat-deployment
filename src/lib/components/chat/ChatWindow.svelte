@@ -128,7 +128,7 @@
 			</div>
 			<div class="flex space-x-3 mr-9 mt-1">
 				<div>
-					<form action="#" method="GET" enctype="multipart/form-data" id="fileUploadForm">
+					<form enctype="multipart/form-data" action="#" method="POST" id="fileUploadForm">
 						<input type="file" name="fileUpload" id="fileUpload" style="display: none;">
 						<button type="button" onclick="uploadFilePDF()">
     						<img class="h-4 w-4" src="../chatui/file.png" alt="upload a file">
@@ -138,11 +138,12 @@
 					<script defer>
 						function uploadFilePDF() {
 							document.getElementById('fileUpload').click();
-						}
-
 						document.getElementById('fileUpload').addEventListener('change', function() {
 							document.getElementById('fileUploadForm').submit(); // Automatically submit the form when file is selected
+						alert('Your file has been uploaded!')
 						});
+						}
+
 					</script>
 				</div>
 
