@@ -291,7 +291,7 @@
 					rel="noreferrer"
 					class="hover:underline">{currentModel.displayName}</a
 				> <span class="max-sm:hidden">·</span><br class="sm:hidden" /> Generated content may be inaccurate
-				or false.
+				or false. This is a beta version.
 			</p>
 			{#if messages.length}
 				<button
