@@ -2,6 +2,8 @@
 	import type { Message } from "$lib/types/Message";
 	import { createEventDispatcher } from "svelte";
 
+	import { API_KEY } from "$lib/actions/chatPDF";
+
 	import CarbonSendAltFilled from "~icons/carbon/send-alt-filled";
 	import CarbonExport from "~icons/carbon/export";
 	import CarbonStopFilledAlt from "~icons/carbon/stop-filled-alt";
@@ -15,6 +17,7 @@
 	import WebSearchToggle from "../WebSearchToggle.svelte";
 	import type { WebSearchMessage } from "$lib/types/WebSearch";
 	import LoginModal from "../LoginModal.svelte";
+	import axios from "axios";
 
 	export let messages: Message[] = [];
 	export let loading = false;
@@ -44,6 +47,33 @@
 		dispatch("message", message);
 		message = "";
 	};
+
+	function uploadFilePDF() {
+		document.getElementById('fileUpload')?.click();
+		document.getElementById('fileUpload')?.addEventListener('change', function () {
+			const file = (this as HTMLInputElement).files?.[0];
+			if (file) {
+				const formData = new FormData();
+				formData.append("file", file);
+				const options = {
+					headers: {
+						"x-api-key": API_KEY,
+					},
+				};
+				axios
+						.post("https://api.chatpdf.com/v1/sources/add-file", formData, options)
+						.then((response) => {
+							console.log("Source ID:", response.data.sourceId);
+
+							alert('Your file has been successfully uploaded!');
+						})
+						.catch((error) => {
+							console.log("Error:", error.message);
+							console.log("Response:", error.response?.data);
+						});
+			}
+		});
+	}
 </script>
 
 <div class="relative min-h-0 min-w-0">
@@ -128,23 +158,12 @@
 			</div>
 			<div class="flex space-x-3 mr-9 mt-1">
 				<div>
-					<form enctype="multipart/form-data" action="#" method="GET" id="fileUploadForm">
+					<form enctype="multipart/form-data" id="fileUploadForm">
 						<input type="file" name="fileUpload" id="fileUpload" style="display: none;">
-						<button type="button" onclick="uploadFilePDF()">
+						<button type="button" on:click={uploadFilePDF}>
     						<img class="h-4 w-4" src="../chatui/file.png" alt="upload a file">
 						</button>
 					</form>
-
-					<script defer>
-						function uploadFilePDF() {
-							document.getElementById('fileUpload').click();
-						document.getElementById('fileUpload').addEventListener('change', function() {
-							document.getElementById('fileUploadForm').submit(); // Automatically submit the form when file is selected
-						alert('Your file has been uploaded!')
-						});
-						}
-
-					</script>
 				</div>
 
 				<div>
