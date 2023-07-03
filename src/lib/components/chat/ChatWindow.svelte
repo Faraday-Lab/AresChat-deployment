@@ -49,7 +49,6 @@
 	};
 
 	function uploadFilePDF() {
-		console.log(API_KEY);
 		document.getElementById('fileUpload')?.click();
 		document.getElementById('fileUpload')?.addEventListener('change', function () {
 			const file = (this as HTMLInputElement).files?.[0];
