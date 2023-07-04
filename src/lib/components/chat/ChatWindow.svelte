@@ -104,7 +104,7 @@
             text: 'File uploaded successfully!',
             showConfirmButton: true,
             footer: 'You can now chat with your file!',
-            background: '#0f172a',
+            background: '#1f2937',
             color: 'white',
             confirmButtonColor: '#059669'
         });
@@ -113,8 +113,7 @@
     function alertBoxProcessing() {
         Swal.fire({
             title: 'Uploading your file...',
-            background: '#0f172a',
-            confirmButtonColor: '#059669',
+            background: '#1f2937',
             allowOutsideClick: false,
             customClass: {
                 popup: 'swal-loading-popup',

@@ -18,7 +18,7 @@
 }
 
 .swal-loading-popup {
-	background-color: #0f172a;
+	background-color: #1f2937;
 	color: white;
 }
 
@@ -28,5 +28,5 @@
 
 .swal-loading-spinner {
 	border-top-color: #059669;
-	border-bottom-color: #059669;
+	border-bottom-color: white;
 }
