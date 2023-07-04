@@ -1,4 +1,5 @@
 @import "./highlight-js.css";
+@import '@sweetalert2/theme-bulma/bulma.css';
 
 @tailwind base;
 @tailwind components;
