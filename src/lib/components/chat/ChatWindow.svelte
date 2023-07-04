@@ -2,7 +2,7 @@
 	import type { Message } from "$lib/types/Message";
 	import { createEventDispatcher } from "svelte";
 
-	import { API_KEY } from "$lib/actions/chatPDF";
+	import { API_KEY } from "$lib/actions/chatPdfVariables";
 
 	import CarbonSendAltFilled from "~icons/carbon/send-alt-filled";
 	import CarbonExport from "~icons/carbon/export";
