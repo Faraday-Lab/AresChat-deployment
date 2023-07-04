@@ -75,6 +75,7 @@
                 },
             };
             isLoading = true;
+            alertBoxProcessing();
 
             axiosPostRequest(formData, options);
 
@@ -102,8 +103,29 @@
             icon: 'success',
             text: 'File uploaded successfully!',
             showConfirmButton: true,
-			footer: 'You can now chat with your file!'
+            footer: 'You can now chat with your file!',
+            background: '#0f172a',
+            color: 'white',
+            confirmButtonColor: '#059669'
         });
+    }
+
+    function alertBoxProcessing() {
+        Swal.fire({
+            title: 'Uploading your file...',
+            background: '#0f172a',
+            confirmButtonColor: '#059669',
+            allowOutsideClick: false,
+            customClass: {
+                popup: 'swal-loading-popup',
+                title: 'swal-loading-title',
+                loader: 'swal-loading-spinner'
+            },
+            didOpen: () => {
+                Swal.showLoading(Swal.getConfirmButton());
+            }
+        });
+
     }
 </script>
 
