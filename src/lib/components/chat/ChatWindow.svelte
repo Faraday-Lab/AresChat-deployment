@@ -2,7 +2,7 @@
 	import type { Message } from "$lib/types/Message";
 	import { createEventDispatcher } from "svelte";
 
-	import { API_KEY } from "$lib/actions/chatPdfVariables";
+	import { API_KEY } from "$lib/actions/API_KEY";
 
 	import CarbonSendAltFilled from "~icons/carbon/send-alt-filled";
 	import CarbonExport from "~icons/carbon/export";
@@ -49,36 +49,54 @@
 	};
 
 	export let isLoading = false;
-	function uploadFilePDF() {
+	function chatWithPDF() {
+		clickFileUpload();
+		addChangeEventListener();
+	}
+
+	function clickFileUpload() {
 		document.getElementById('fileUpload')?.click();
-		document.getElementById('fileUpload')?.addEventListener('change', function () {
-			const file = (this as HTMLInputElement).files?.[0];
-			if (file) {
-				const formData = new FormData();
-				formData.append("file", file);
-				const options = {
-					headers: {
-						"x-api-key": API_KEY,
-					},
-				};
-				isLoading = true;
+	}
 
-				axios
-						.post("https://api.chatpdf.com/v1/sources/add-file", formData, options)
-						.then((response) => {
-							console.log("Source ID:", response.data.sourceId);
-							isLoading = false;
-							alert('Your file has been successfully uploaded!');
-						})
-						.catch((error) => {
-							console.log("Error:", error.message);
-							console.log("Response:", error.response?.data);
-						})
+	function addChangeEventListener() {
+		document.getElementById('fileUpload')?.addEventListener('change', handleFileChange);
+	}
 
-			} else {
-				isLoading = false;
-			}
-		});
+	function handleFileChange(this: never) {
+		const file = (this as HTMLInputElement).files?.[0];
+		if (file) {
+			const formData = new FormData();
+			formData.append("file", file);
+			const options = {
+				headers: {
+					"x-api-key": API_KEY,
+				},
+			};
+			isLoading = true;
+
+			axiosPostRequest(formData, options);
+
+		} else {
+			isLoading = false;
+		}
+	}
+
+	function axiosPostRequest(formData, options) {
+		axios
+				.post("https://api.chatpdf.com/v1/sources/add-file", formData, options)
+				.then((response) => {
+					console.log("Source ID:", response.data.sourceId);
+					isLoading = false;
+					alertSuccess();
+				})
+				.catch((error) => {
+					console.log("Error:", error.message);
+					console.log("Response:", error.response?.data);
+				})
+	}
+
+	function alertSuccess() {
+		alert("Your file has been successfully uploaded!");
 	}
 </script>
 
@@ -175,7 +193,7 @@
 					{:else}
 						<form enctype="multipart/form-data" id="fileUploadForm">
 							<input type="file" name="fileUpload" id="fileUpload" style="display: none;">
-							<button type="button" on:click={uploadFilePDF}>
+							<button type="button" on:click={chatWithPDF}>
 								<img class="h-4 w-4" src="../chatui/file.png" alt="upload a file">
 							</button>
 						</form>
