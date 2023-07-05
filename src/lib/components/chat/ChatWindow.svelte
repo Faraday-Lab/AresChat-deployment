@@ -213,7 +213,7 @@
                 }
 
                 return axios
-                    .post('https://habitual-citrine-locket.glitch.me/api/proxy', data, options)
+                    .post('https://api.chatpdf.com/v1/chats/message', data, options)
                     .then(response => {
                         if (!response.data.success) {
                             throw new Error(response.data.message)
