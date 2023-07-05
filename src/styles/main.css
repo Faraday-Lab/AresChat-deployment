@@ -30,3 +30,7 @@
 	border-top-color: #059669;
 	border-bottom-color: white;
 }
+
+.swal-button-cancel {
+	color: white;
+}
