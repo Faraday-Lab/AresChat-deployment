@@ -49,6 +49,13 @@
         message = "";
     };
 
+    const options = {
+        headers: {
+            "x-api-key": API_KEY,
+            "Content-Type": "application/json"
+        }
+    };
+
     function chatWithPDF() {
         clickFileUpload();
         addChangeEventListener();
@@ -59,15 +66,15 @@
     }
 
     function addChangeEventListener() {
-        document.getElementById('fileUpload')?.addEventListener('change', handleFileChange);
+        document.getElementById('fileUpload')?.addEventListener('change', (event) => handleFileChange.call(event.target));
     }
 
-    function handleFileChange(this: never) {
-        const file = (this as HTMLInputElement).files?.[0];
+    function handleFileChange(this: HTMLInputElement) {
+        const file = this.files?.[0];
         if (file) {
             const formData = new FormData();
             formData.append("file", file);
-            const options = {
+            let optionsUpload = {
                 headers: {
                     "x-api-key": API_KEY,
                 },
@@ -75,23 +82,36 @@
 
             alertBoxProcessing("Uploading");
 
-            uploadFile(formData, options);
+            uploadFile(formData, optionsUpload);
         }
     }
 
-    function uploadFile(formData, options) {
+    function uploadFile(formData, optns) {
         axios
-            .post("https://api.chatpdf.com/v1/sources/add-file", formData, options)
+            .post("https://api.chatpdf.com/v1/sources/add-file", formData, optns)
             .then((response) => {
-                console.log("Source ID:", response.data.sourceId);
                 const sourceID = response.data.sourceId;
                 alertSuccess(sourceID);
             })
             .catch((error) => {
                 console.log("Error:", error.message);
-                console.log("Response:", error.response?.data);
+                console.log("Response:", error.response?.data.message);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    customClass: {
+                        title: 'swal-white-title'
+                    },
+                    color: 'white',
+                    html: error.response?.data.message + '.<br>Please update a valid PDF.',
+                    background: '#1f2937',
+                    confirmButtonColor: '#059669',
+                    confirmButtonText: "Try again",
+                    allowOutsideClick: true
+                })
             })
     }
+
 
     function alertSuccess(sourceID) {
         Swal.fire({
@@ -118,7 +138,7 @@
             allowOutsideClick: false,
             customClass: {
                 popup: 'swal-loading-popup',
-                title: 'swal-loading-title',
+                title: 'swal-white-title',
                 loader: 'swal-loading-spinner'
             },
             didOpen: () => {
@@ -128,18 +148,10 @@
     }
 
     function isDenied(sourceID) {
-        const options = {
-            headers: {
-                "x-api-key": API_KEY,
-                "Content-Type": "application/json"
-            }
-        };
 
         const data = {
             sources: [sourceID.toString()]
         };
-
-        console.log(data);
 
         alertBoxProcessing("Deleting");
 
