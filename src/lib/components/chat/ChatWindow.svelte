@@ -140,7 +140,7 @@
                     color: 'white',
                     confirmButtonColor: '#059669',
                     confirmButtonText: "Thank you!",
-                    allowOutsideClick: true
+                    allowOutsideClick: true,
                     customClass: {
                         title: 'swal-white-title'
                     },
