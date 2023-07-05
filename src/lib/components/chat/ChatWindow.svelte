@@ -53,7 +53,7 @@
         headers: {
             "x-api-key": API_KEY,
             "Content-Type": "application/json",
-            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Origin': 'https://ares-chat-v2.vercel.app/',
         }
     };
 
