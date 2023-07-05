@@ -52,20 +52,21 @@
     const options = {
         headers: {
             "x-api-key": API_KEY,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Access-Control-Allow-Origin': '*',
         }
     };
 
     function chatWithPDF() {
         clickFileUpload();
-        addChangeEventListener();
+        processFile();
     }
 
     function clickFileUpload() {
         document.getElementById('fileUpload')?.click();
     }
 
-    function addChangeEventListener() {
+    function processFile() {
         document.getElementById('fileUpload')?.addEventListener('change', (event) => handleFileChange.call(event.target));
     }
 
@@ -121,19 +122,22 @@
             background: '#1f2937',
             color: 'white',
             confirmButtonColor: '#059669',
-            confirmButtonText: "Great!",
+            confirmButtonText: "Continue",
             showDenyButton: true,
             denyButtonText: 'Dismiss my file'
         }).then((result) => {
             if (result.isDenied) {
                 isDenied(sourceID);
             }
+            else if (result.isConfirmed) {
+                questionYourFile(sourceID);
+            }
         });
     }
 
-    function alertBoxProcessing(value: string) {
+    function alertBoxProcessing(state: string, type = 'file') {
         Swal.fire({
-            title: `${value} your file...`,
+            title: `${state} your ${type}...`,
             background: '#1f2937',
             allowOutsideClick: false,
             customClass: {
@@ -177,6 +181,56 @@
             confirmButtonText: "Thank you!",
             allowOutsideClick: true
         });
+    }
+
+   function questionYourFile(sourceID) {
+        Swal.fire({
+            title: 'Question your file!',
+            input: 'text',
+            inputLabel: 'What is your question?',
+            inputPlaceholder: 'Type your question here...',
+            showCancelButton: true,
+            confirmButtonText: 'Send',
+            showLoaderOnConfirm: true,
+            background: '#1f2937',
+            color: 'white',
+            confirmButtonColor: '#059669',
+            customClass: {
+                title: 'swal-white-title',
+                loader: 'swal-loading-spinner'
+            },
+            preConfirm: (question) => {
+                console.log(question);
+                const data = {
+                    referencesSources: true,
+                    sourceId: sourceID.toString(),
+                    messages: [
+                        {
+                            role: 'user',
+                            content: question.toString()
+                        }
+                    ]
+                }
+
+                return axios
+                    .post('https://habitual-citrine-locket.glitch.me/api/proxy', data, options)
+                    .then(response => {
+                        if (!response.data.success) {
+                            throw new Error(response.data.message)
+                        }
+                        console.log(response.data);
+                        return response.data
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(
+                            `Request failed: ${error}`
+
+                        )
+                        console.log("Error:", error.message);
+                        console.log("Response:", error.response?.data);
+                    })
+            },
+        })
     }
 
 </script>
@@ -266,7 +320,10 @@
 
                     <form enctype="multipart/form-data" id="fileUploadForm">
                         <input type="file" name="fileUpload" id="fileUpload" style="display: none;">
-                        <button type="button" on:click={chatWithPDF}>
+                        <button
+                                type="button"
+                                on:click={chatWithPDF}
+                                title="Upload a PDF!">
                             <img class="h-4 w-4" src="../chatui/file.png" alt="upload a file">
                         </button>
                     </form>
