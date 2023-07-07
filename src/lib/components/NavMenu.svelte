@@ -68,6 +68,19 @@
         </form>
     {/if}
     <div class="flex flex-row">
+        <a
+                href="{base}/signin"
+                rel="noreferrer"
+                class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+        >Sign In
+        </a>
+        <a
+                href="{base}/signup"
+                class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+        >Sign Up
+        </a></div>
+
+    <div class="flex flex-row">
         <button
                 on:click={switchTheme}
                 type="button"
