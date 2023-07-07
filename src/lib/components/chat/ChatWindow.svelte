@@ -53,7 +53,7 @@
         headers: {
             "x-api-key": API_KEY,
             "Content-Type": "application/json",
-            'Access-Control-Allow-Origin': 'https://ares-chat-v2.vercel.app/',
+            // 'Access-Control-Allow-Origin': 'https://ares-chat-v2.vercel.app/',
         }
     };
 
@@ -92,6 +92,7 @@
             .post("https://api.chatpdf.com/v1/sources/add-file", formData, optns)
             .then((response) => {
                 const sourceID = response.data.sourceId;
+                console.log(sourceID);
                 alertSuccess(sourceID);
             })
             .catch((error) => {
@@ -127,26 +128,30 @@
             denyButtonText: 'Dismiss my file'
         }).then((result) => {
             if (result.isDenied) {
-                isDenied(sourceID);
-            }
-            else if (result.isConfirmed) {
-                // questionYourFile(sourceID);
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Work in Progress',
-                    html: 'This feature is still in development.<br>Stay tuned for more updates!',
-                    showConfirmButton: true,
-                    background: '#1f2937',
-                    color: 'white',
-                    confirmButtonColor: '#059669',
-                    confirmButtonText: "Thank you!",
-                    allowOutsideClick: true,
-                    customClass: {
-                        title: 'swal-white-title'
-                    },
-                })
+                // isDenied(sourceID);
+                WIP();
+            } else if (result.isConfirmed) {
+                questionYourFile(sourceID);
+
             }
         });
+    }
+
+    function WIP() {
+        Swal.fire({
+            icon: 'info',
+            title: 'Work in Progress',
+            html: 'This feature is still in development.<br>Stay tuned for more updates!',
+            showConfirmButton: true,
+            background: '#1f2937',
+            color: 'white',
+            confirmButtonColor: '#059669',
+            confirmButtonText: "Thank you!",
+            allowOutsideClick: true,
+            customClass: {
+                title: 'swal-white-title'
+            },
+        })
     }
 
     function alertBoxProcessing(state: string, type = 'file') {
@@ -197,7 +202,7 @@
         });
     }
 
-   function questionYourFile(sourceID) {
+    function questionYourFile(sourceID) {
         Swal.fire({
             title: 'Question your file!',
             input: 'text',
@@ -211,7 +216,7 @@
             confirmButtonColor: '#059669',
             customClass: {
                 title: 'swal-white-title',
-                loader: 'swal-loading-spinner'
+                loader: 'swal-loading-spinner',
             },
             preConfirm: (question) => {
                 console.log(question);
@@ -221,31 +226,30 @@
                     messages: [
                         {
                             role: 'user',
-                            content: question.toString()
-                        }
-                    ]
-                }
+                            content: question.toString(),
+                        },
+                    ],
+                };
 
                 return axios
-                    .post('https://api.chatpdf.com/v1/chats/message', data, options)
-                    .then(response => {
+                    .post('http://localhost:3000/api/proxy', data, options)
+                    .then((response) => {
                         if (!response.data.success) {
-                            throw new Error(response.data.message)
+                            throw new Error(response.data.message);
                         }
                         console.log(response.data);
-                        return response.data
+                        return response.data;
                     })
-                    .catch(error => {
-                        Swal.showValidationMessage(
-                            `Request failed: ${error}`
+                    .catch((error) => {
+                        Swal.showValidationMessage(`Request failed: ${error}`);
 
-                        )
-                        console.log("Error:", error.message);
-                        console.log("Response:", error.response?.data);
-                    })
+                        console.log('Error:', error.message);
+                        console.log('Response:', error.response?.data);
+                    });
             },
-        })
+        });
     }
+
 
 </script>
 
