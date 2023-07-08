@@ -28,7 +28,6 @@
 <div class="min-h-screen p-6 bg-dark-100 flex items-center justify-center">
     <div class="container max-w-screen-lg mx-auto">
       <div>
-        <img src="../chatui/vert_bleu.svg" class="h-32" alt="logo"/>
         <h1 class="text-5xl font-bold  mt-1">Best AI of the world</h1>
         <div class="bg-white rounded border rounded shadow-lg p-4 px-4 md:p-8 mb-6">
           <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
