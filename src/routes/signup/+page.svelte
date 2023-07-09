@@ -23,7 +23,7 @@
       confirmPassword = '';
     }
   </script>
-  <main>
+  <main class="overflow-y-auto">
   <!-- component -->
 <div class="min-h-screen p-6 bg-dark-100 flex items-center justify-center">
     <div class="container max-w-screen-lg mx-auto">
