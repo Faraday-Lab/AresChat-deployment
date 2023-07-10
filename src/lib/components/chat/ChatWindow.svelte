@@ -234,7 +234,7 @@
                 };
 
                 return axios
-                    .post('https://chatpdf.openares.com/api/proxy', data, options)
+                    .post('http://chatpdf.openares.com/api/proxy', data, options)
                     .then((response) => {
                         console.log(response.data.content);
                         return response.data;
