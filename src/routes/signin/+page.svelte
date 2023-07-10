@@ -1,4 +1,8 @@
-<script>
+<script lang="ts">
+	import { invalidateAll } from "$app/navigation";
+    import { signIn, signOut, initialize } from 'svelte-google-auth/client';
+    // @ts-ignore
+    import type { PageData } from "../$types";
 	import { onMount } from "svelte";
     import {base} from "$app/paths";
     import {createEventDispatcher} from "svelte";
@@ -6,6 +10,8 @@
     let username = "";
     let password = "";
     let isRegisterPage = false;
+    export let data: PageData;
+    initialize(data, invalidateAll);
   
     async function handleSubmit() {
       console.log({username, password});
@@ -81,7 +87,7 @@
                             fill="#1976D2" />
                     </svg>
                 </div>
-                <h1 class="px-4 py-3 w-5/6 text-center text-gray-600 font-bold">Login with Google</h1>
+                <h1 class="px-4 py-3 w-5/6 text-center text-gray-600 font-bold" on:click={() => signIn()}>Login with Google</h1>
             </a>
             <div class="mt-4 flex items-center justify-between">
                 <span class="border-b w-1/5 lg:w-1/4"></span>
