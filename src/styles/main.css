@@ -26,6 +26,10 @@
 	color: white;
 }
 
+.swal-answer {
+	text-align: justify;
+}
+
 .swal-loading-spinner {
 	border-top-color: #059669;
 	border-bottom-color: white;
