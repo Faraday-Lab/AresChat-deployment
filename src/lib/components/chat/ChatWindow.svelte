@@ -128,8 +128,8 @@
             denyButtonText: 'Dismiss my file'
         }).then((result) => {
             if (result.isDenied) {
-                // isDenied(sourceID);
-                WIP();
+                isDenied(sourceID);
+                // WIP();
             } else if (result.isConfirmed) {
                 questionYourFile(sourceID);
 
@@ -203,6 +203,8 @@
     }
 
     function questionYourFile(sourceID) {
+        let outerResult;
+
         Swal.fire({
             title: 'Question your file!',
             input: 'text',
@@ -221,12 +223,12 @@
             preConfirm: (question) => {
                 console.log(question);
                 const data = {
-                    referencesSources: true,
-                    sourceId: sourceID.toString(),
-                    messages: [
+                    "referencesSources": true,
+                    "sourceId": sourceID.toString(),
+                    "messages": [
                         {
-                            role: 'user',
-                            content: question.toString(),
+                            "role": 'user',
+                            "content": question.toString(),
                         },
                     ],
                 };
@@ -234,21 +236,44 @@
                 return axios
                     .post('http://localhost:3000/api/proxy', data, options)
                     .then((response) => {
-                        if (!response.data.success) {
-                            throw new Error(response.data.message);
-                        }
-                        console.log(response.data);
+                        console.log(response.data.content);
                         return response.data;
                     })
                     .catch((error) => {
+                        console.log(error);
                         Swal.showValidationMessage(`Request failed: ${error}`);
 
                         console.log('Error:', error.message);
                         console.log('Response:', error.response?.data);
                     });
             },
+        }).then((result) => {
+            console.log(result);
+            if (result.isConfirmed) {
+                Swal.fire({
+                    text: result.value.content,
+                    background: '#1f2937',
+                    color: 'white',
+                    showConfirmButton: true,
+                    confirmButtonColor: '#059669',
+                    confirmButtonText: "I have another question...",
+                    allowOutsideClick: true,
+                    customClass: {
+                        content: 'swal-answer',
+                    },
+                }).then((innerResult) => {
+                    if (innerResult.isConfirmed) {
+                        questionYourFile(sourceID);
+                    }
+                });
+            }
+            outerResult = result;
         });
     }
+
+
+
+
 
 
 </script>
