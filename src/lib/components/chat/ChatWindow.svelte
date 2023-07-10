@@ -179,7 +179,7 @@
         alertBoxProcessing("Deleting");
 
         axios
-            .post("https://api.chatpdf.com/v1/sources/delete", data, options)
+            .post("https://chatpdf.openares.com/api/proxy/delete", data, options)
             .then(() => {
                 confirmDeletion();
             })
@@ -203,7 +203,10 @@
     }
 
     function questionYourFile(sourceID) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         let outerResult;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        let qstn;
 
         Swal.fire({
             title: 'Question your file!',
@@ -221,6 +224,7 @@
                 loader: 'swal-loading-spinner',
             },
             preConfirm: (question) => {
+                qstn = question;
                 console.log(question);
                 const data = {
                     "referencesSources": true,
@@ -251,6 +255,7 @@
             console.log(result);
             if (result.isConfirmed) {
                 Swal.fire({
+                    title: qstn,
                     text: result.value.content,
                     background: '#1f2937',
                     color: 'white',
