@@ -1,4 +1,8 @@
-<script>
+<script lang="ts">
+    import { invalidateAll } from "$app/navigation";
+    import { signIn, signOut, initialize } from 'svelte-google-auth/client';
+    // @ts-ignore
+    import type { PageData } from "../$types";
 	import { onMount } from "svelte";
     import {base} from "$app/paths";
     import {createEventDispatcher} from "svelte";
@@ -6,7 +10,9 @@
     let username = "";
     let password = "";
     let isRegisterPage = false;
-  
+
+export let data: PageData;
+    initialize(data, invalidateAll);
     async function handleSubmit() {
       console.log({username, password});
         const url = 'https://auth-server-one.vercel.app/login'
