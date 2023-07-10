@@ -16,6 +16,9 @@ export const load: LayoutServerLoad = async ({ locals, depends, url }) => {
 	const urlModel = url.searchParams.get("model");
 
 	depends(UrlDependency.ConversationList);
+	if (!isSignedIn(locals)) {
+		throw redirect(302, generateAuthUrl(locals, url,SCOPES,url.pathname ));
+	}
 
 	if (urlModel) {
 		const isValidModel = validateModel(models).safeParse(urlModel).success;
