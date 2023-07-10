@@ -1,7 +1,7 @@
 <script lang="ts">
     import {base} from "$app/paths";
     import {createEventDispatcher} from "svelte";
-
+    import {signIn, signOut, initialize} from 'svelte-google-auth/client';
     import Logo from "$lib/components/icons/Logo.svelte";
     import {switchTheme} from "$lib/switchTheme";
     import {PUBLIC_APP_NAME, PUBLIC_ORIGIN} from "$env/static/public";
@@ -60,13 +60,14 @@
             >{user?.username || user?.email}</span
             >
             <button
+		    on:click={() => signOut()}
                     type="submit"
                     class="ml-auto h-6 flex-none items-center gap-1.5 rounded-md border bg-white px-2 text-gray-700 shadow-sm group-hover:flex hover:shadow-none dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400 dark:hover:text-gray-300 md:hidden"
             >
                 Sign Out
             </button>
         </form>
-    {/if}
+    {:else}
     <div class="flex flex-row">
         <a
                 href="{base}/signin"
@@ -79,6 +80,7 @@
                 class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
         >Sign Up
         </a></div>
+	{/if}
 
     <div class="flex flex-row">
         <button
