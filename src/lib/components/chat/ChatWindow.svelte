@@ -276,8 +276,61 @@
         });
     }
 
+    function textImage(){
+        getImages()
+    }
 
-
+	function getImages() {
+		Swal.fire({
+            title: 'Generate images!',
+            input: 'text',
+            inputLabel: 'Ask anything',
+            inputPlaceholder: 'Type your prompt here...',
+			showCancelButton: true,
+            confirmButtonText: 'Send',
+            showLoaderOnConfirm: true,
+			preConfirm: (prompt) => {
+				return fetch(
+					`https://api.stability.ai/v1/generation/stable-diffusion-v1-5/text-to-image`,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							Accept: 'application/json',
+							Authorization: `sk-bMhuMy55knbw133npsyeXP78HOe2TKMArEGlbueyxiAxaWED`,
+						},
+						body: JSON.stringify({
+							text_prompts: [
+							{
+								text: prompt
+							},
+							],
+							cfg_scale: 7,
+							clip_guidance_preset: 'FAST_BLUE',
+							height: 512,
+							width: 512,
+							samples: 3,
+							steps: 30,
+						}),
+					}
+				)
+                .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Non-200 response: ${response.text()}`);
+                }
+                return response.json();
+                })
+                .then((responseJSON) => {
+                const images = responseJSON.artifacts.map((image) =>
+                    `data:image/png;base64,${image.base64}`
+                );
+                })
+                .catch((error) => {
+                console.error(error);
+                });
+			}
+        })
+	}
 
 
 
@@ -510,6 +563,14 @@
                         }
                     </script>
                 </div>
+
+				<div>
+					<button 
+                        type="button"
+                        on:click={textImage}>
+						<img class="h-4 w-4 popup-img" src="../chatui/Paint.png" alt="Pinceau" >
+					</button>
+				</div>
             </div>
         </form>
 

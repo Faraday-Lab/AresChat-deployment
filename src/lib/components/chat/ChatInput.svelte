@@ -42,6 +42,7 @@
 		style="min-height: {minHeight}; max-height: {maxHeight}">{(value || " ") + "\n"}</pre>
 
 	<textarea
+		id="promptInput"
 		enterkeyhint="send"
 		tabindex="0"
 		rows="1"
