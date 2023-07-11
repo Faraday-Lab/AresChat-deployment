@@ -564,13 +564,13 @@
                     </script>
                 </div>
 
-				<div>
-					<button 
-                        type="button"
-                        on:click={textImage}>
-						<img class="h-4 w-4 popup-img" src="../chatui/Paint.png" alt="Pinceau" >
-					</button>
-				</div>
+<!--				<div>-->
+<!--					<button -->
+<!--                        type="button"-->
+<!--                        on:click={textImage}>-->
+<!--						<img class="h-4 w-4 popup-img" src="../chatui/Paint.png" alt="Pinceau" >-->
+<!--					</button>-->
+<!--				</div>-->
             </div>
         </form>
 
