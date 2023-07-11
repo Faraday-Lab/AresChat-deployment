@@ -1,7 +1,7 @@
 <script lang="ts">
     import {base} from "$app/paths";
     import {createEventDispatcher} from "svelte";
-    // import {signIn, signOut, initialize} from 'svelte-google-auth/client';
+    import {signIn, signOut, initialize} from 'svelte-google-auth/client';
     import Logo from "$lib/components/icons/Logo.svelte";
     import {switchTheme} from "$lib/switchTheme";
     import {PUBLIC_APP_NAME, PUBLIC_ORIGIN} from "$env/static/public";
