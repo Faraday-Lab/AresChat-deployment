@@ -56,7 +56,7 @@ const dispatch = createEventDispatcher<{
         class="mt-0.5 flex flex-col gap-1 rounded-r-xl bg-gradient-to-l from-gray-50 p-3 text-sm dark:from-gray-800/30"
 >
     {#if user?.username || user?.email}
-        <div
+       <div
                 class="group flex items-center gap-1.5 rounded-lg pl-3 pr-2 hover:bg-gray-100 dark:hover:bg-gray-700"
         >
 			<span
@@ -64,7 +64,7 @@ const dispatch = createEventDispatcher<{
             >{user?.username || user?.email}</span
             >
             <button
-		    on:click={() => signOut() || `${base}/`}
+                   on:click={() =>signOut() || `${base}/`}
                     type="submit"
                     class="ml-auto h-6 flex-none items-center gap-1.5 rounded-md border bg-white px-2 text-gray-700 shadow-sm group-hover:flex hover:shadow-none dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400 dark:hover:text-gray-300 md:hidden"
             >
