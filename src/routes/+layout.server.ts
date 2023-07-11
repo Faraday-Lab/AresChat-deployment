@@ -7,9 +7,9 @@ import { defaultModel, models, oldModels, validateModel } from "$lib/server/mode
 import { authCondition, requiresUser } from "$lib/server/auth";
 import { DEFAULT_SETTINGS } from "$lib/types/Settings";
 import { SERPAPI_KEY, SERPER_API_KEY } from "$env/static/private";
-// import { generateAuthUrl, hydrateAuth, isSignedIn } from "svelte-google-auth/server";
+import { generateAuthUrl, hydrateAuth, isSignedIn } from "svelte-google-auth/server";
 
-// const SCOPES = ['openid', 'profile', 'email'];
+const SCOPES = ['openid', 'profile', 'email'];
 
 export const load: LayoutServerLoad = async ({ locals, depends, url }) => {
 	const { conversations } = collections;
@@ -86,6 +86,6 @@ export const load: LayoutServerLoad = async ({ locals, depends, url }) => {
 			email: locals.user.email,
 		},
 		requiresLogin: requiresUser,
-		// ...hydrateAuth(locals)
+		...hydrateAuth(locals)
 	};
 };
