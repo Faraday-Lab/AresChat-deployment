@@ -1,14 +1,20 @@
 <script lang="ts">
     import {base} from "$app/paths";
     import {createEventDispatcher} from "svelte";
-    import {signIn, signOut, initialize} from 'svelte-google-auth/client';
+    import { invalidateAll } from '$app/navigation';
+    import { signIn, signOut, initialize } from 'svelte-google-auth/client';
+    import type { PageData } from "../../routes/$types";
     import Logo from "$lib/components/icons/Logo.svelte";
     import {switchTheme} from "$lib/switchTheme";
     import {PUBLIC_APP_NAME, PUBLIC_ORIGIN} from "$env/static/public";
     import NavConversationItem from "./NavConversationItem.svelte";
     import type {LayoutData} from "../../routes/$types";
 
-    const dispatch = createEventDispatcher<{
+
+    export let data: PageData;
+    initialize(data, invalidateAll);
+    
+const dispatch = createEventDispatcher<{
         shareConversation: { id: string; title: string };
         clickSettings: void;
         clickLogout: void;
