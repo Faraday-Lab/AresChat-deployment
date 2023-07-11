@@ -567,6 +567,7 @@
                 <div>
                     <button
                             type="button"
+                            on:click={WIP}
                     >
                         <img class="h-4 w-4 popup-img" src="../chatui/Paint.png" alt="Pinceau">
                     </button>
