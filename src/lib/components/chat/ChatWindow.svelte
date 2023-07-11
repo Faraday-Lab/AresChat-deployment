@@ -276,11 +276,6 @@
         });
     }
 
-
-
-
-
-
 </script>
 
 <div class="relative min-h-0 min-w-0">
