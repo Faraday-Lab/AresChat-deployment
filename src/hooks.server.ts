@@ -10,6 +10,10 @@ import { collections } from "$lib/server/database";
 import { base } from "$app/paths";
 import { refreshSessionCookie, requiresUser } from "$lib/server/auth";
 import { ERROR_MESSAGES } from "$lib/stores/errors";
+import { SvelteGoogleAuthHook } from 'svelte-google-auth/server';
+import client_secret from "./client_secret.json";
+
+const auth = new SvelteGoogleAuthHook(client_secret.web);
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const token = event.cookies.get(COOKIE_NAME);

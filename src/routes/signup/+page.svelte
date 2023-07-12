@@ -1,13 +1,19 @@
 <!-- Registration.svelte -->
 
-<script>
+<script lang="ts">
     import {base} from "$app/paths";
     import {createEventDispatcher} from "svelte";
+    import { invalidateAll } from '$app/navigation';
+	import { signIn, signOut, initialize } from 'svelte-google-auth/client';
+	import type { PageData } from './$types.js';
 
     let username = '';
     let email = '';
     let password = '';
     let confirmPassword = '';
+
+    export let data: PageData;
+	initialize(data, invalidateAll);
   
     async function handleSubmit() {
         console.log({username, password});
@@ -34,7 +40,7 @@
               <p class="font-medium text-lg">AresChat | Create A New Account</p>
               <p>Welcome,please complete all informations to signup</p>
               <p class="flex items-center justify-center mt-4 mb-4">OR</p>
-              <a href={`${base}/`} class="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100">
+              <a on:click={() => signIn() || `${base}/`} class="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100">
                 <div class="px-4 py-3">
                     <svg class="h-6 w-6" viewBox="0 0 40 40">
                         <path
