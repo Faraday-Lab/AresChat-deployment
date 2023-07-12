@@ -36,6 +36,34 @@
 
     function displayLock() {
         lock.update((value) => !value);
+        if ($lock) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Your conversation is now private!',
+                showConfirmButton: true,
+                confirmButtonText: 'Thanks!',
+                background: '#1f2937',
+                color: 'white',
+                confirmButtonColor: '#059669',
+                customClass: {
+                    title: 'swal-white-title',
+                }
+            })
+        }
+        else {
+            Swal.fire({
+                icon: 'info',
+                title: 'Your conversation is now public!',
+                showConfirmButton: true,
+                confirmButtonText: 'Thanks!',
+                background: '#1f2937',
+                color: 'white',
+                confirmButtonColor: '#059669',
+                customClass: {
+                    title: 'swal-white-title',
+                }
+            })
+        }
     }
 
 </script>
