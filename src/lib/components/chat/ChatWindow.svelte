@@ -1,9 +1,10 @@
 <script lang="ts">
     import type {Message} from "$lib/types/Message";
-    import {createEventDispatcher, onDestroy, onMount} from "svelte";
+    import {createEventDispatcher, onMount} from "svelte";
     import {lock} from '$lib/lockStore';
 
-    import {API_KEY} from "$lib/actions/API_KEY";
+    import {CHATPDF_API_KEY} from "$lib/actions/CHATPDF_API_KEY";
+    import {NASA_API_KEY} from "$lib/actions/NASA_API_KEY";
     import Swal from 'sweetalert2';
 
     import CarbonSendAltFilled from "~icons/carbon/send-alt-filled";
@@ -52,9 +53,8 @@
 
     const options = {
         headers: {
-            "x-api-key": API_KEY,
+            "x-api-key": CHATPDF_API_KEY,
             "Content-Type": "application/json",
-            // 'Access-Control-Allow-Origin': 'https://ares-chat-v2.vercel.app/',
         }
     };
 
@@ -78,7 +78,7 @@
             formData.append("file", file);
             let optionsUpload = {
                 headers: {
-                    "x-api-key": API_KEY,
+                    "x-api-key": CHATPDF_API_KEY,
                 },
             };
 
@@ -363,9 +363,46 @@
             unsubscribe();
         };
     });
+
+    function NASA() {
+        const URL = 'https://api.nasa.gov/planetary/apod?api_key=';
+        axios
+            .get(URL + NASA_API_KEY)
+            .then((response) => {
+                console.log(response.data);
+                Swal.fire({
+                    title: response.data.title,
+                    text: response.data.explanation,
+                    imageUrl: response.data.url,
+                    imageAlt: 'NASA image of the day',
+                    background: '#1f2937',
+                    color: 'white',
+                    showConfirmButton: true,
+                    confirmButtonColor: '#059669',
+                    confirmButtonText: "Cool!",
+                    allowOutsideClick: true,
+                    customClass: {
+                        title: 'nasa-title',
+                        content: 'nasa',
+                        container: 'nasa',
+                        popup: 'nasa',
+                        text: 'nasa',
+                        htmlContainer: 'nasa',
+                        header: 'nasa'
+                    },
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 </script>
 
 <div class="relative min-h-0 min-w-0">
+    <div class="absolute right-8 top-10 hover:animate-spin transition duration-700" on:click={NASA}>
+        <img src="../chatui/rocket.svg" alt="rocket"
+             class="h-10 w-10 hover:scale-125 transition-transform duration-700 cursor-pointer">
+    </div>
     {#if loginModalOpen}
         <LoginModal {settings} on:close={() => (loginModalOpen = false)}/>
     {/if}
