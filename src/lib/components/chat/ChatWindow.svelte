@@ -375,6 +375,9 @@
                         on:click={() => dispatch("stop")}
                 />
             {/if}
+            <div class="absolute right-0">
+                <img src="" alt="lock">
+            </div>
         </div>
         <form
                 on:submit|preventDefault={handleSubmit}

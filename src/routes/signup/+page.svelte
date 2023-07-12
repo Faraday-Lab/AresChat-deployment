@@ -1,6 +1,6 @@
 <!-- Registration.svelte -->
 
-<script>
+<script lang="ts">
     import {base} from "$app/paths";
     import {createEventDispatcher} from "svelte";
     import { invalidateAll } from '$app/navigation';
