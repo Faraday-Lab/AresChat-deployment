@@ -1,20 +1,22 @@
 <script lang="ts">
     import {base} from "$app/paths";
     import {createEventDispatcher} from "svelte";
-    import { invalidateAll } from '$app/navigation';
-    import { signIn, signOut, initialize } from 'svelte-google-auth/client';
-    import type { PageData } from "../../routes/$types";
+    import {invalidateAll} from '$app/navigation';
+    import {signIn, signOut, initialize} from 'svelte-google-auth/client';
+    import type {PageData} from "../../routes/$types";
     import Logo from "$lib/components/icons/Logo.svelte";
     import {switchTheme} from "$lib/switchTheme";
     import {PUBLIC_APP_NAME, PUBLIC_ORIGIN} from "$env/static/public";
     import NavConversationItem from "./NavConversationItem.svelte";
     import type {LayoutData} from "../../routes/$types";
-
+    import Swal from "sweetalert2";
+    // import lock from "$lib/components/chat/ChatWindow.svelte";
+    import { lock } from '../../lib/lockStore';
 
     export let data: PageData;
     initialize(data, invalidateAll);
-    
-const dispatch = createEventDispatcher<{
+
+    const dispatch = createEventDispatcher<{
         shareConversation: { id: string; title: string };
         clickSettings: void;
         clickLogout: void;
@@ -25,6 +27,17 @@ const dispatch = createEventDispatcher<{
         title: string;
     }> = [];
     export let user: LayoutData["user"];
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const dispatchLock = createEventDispatcher();
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    let isLocked = true;
+
+    function displayLock() {
+        lock.update((value) => !value);
+    }
+
 </script>
 
 <div class="sticky top-0 flex flex-none items-center justify-between px-3 py-3.5 max-sm:pt-0">
@@ -38,12 +51,16 @@ const dispatch = createEventDispatcher<{
     ><img src="../chatui/robot.svg" alt="locket" class="w-4 h-4 mr-1">
         New AI Chat
     </a>
-        <a
-                href={`${base}/`}
-                class="flex rounded-lg border bg-white px-2 py-0.5 text-center shadow-sm hover:shadow-none dark:border-gray-600 dark:bg-gray-700 flex-row items-center"
-        >
-            <img src="../chatui/lock.svg" alt="locket" class="w-4 h-4 mr-1">New Private Chat
-        </a></div>
+        <button on:click={displayLock} class="flex flex-row items-center rounded-lg border bg-white px-2 py-0.5 text-center shadow-sm hover:shadow-none dark:border-gray-600 dark:bg-gray-700">
+            <img src="../chatui/lock.svg" alt="locket" class="w-4 h-4 mr-1">
+            {#if $lock}
+                New Public Chat
+            {:else}
+                New Private Chat
+            {/if}
+        </button>
+
+    </div>
 </div>
 <div
         class="scrollbar-custom flex flex-col gap-1 overflow-y-auto rounded-r-xl bg-gradient-to-l from-gray-50 px-3 pb-3 pt-2 dark:from-gray-800/30"
@@ -56,7 +73,7 @@ const dispatch = createEventDispatcher<{
         class="mt-0.5 flex flex-col gap-1 rounded-r-xl bg-gradient-to-l from-gray-50 p-3 text-sm dark:from-gray-800/30"
 >
     {#if user?.username || user?.email}
-       <div
+        <div
                 class="group flex items-center gap-1.5 rounded-lg pl-3 pr-2 hover:bg-gray-100 dark:hover:bg-gray-700"
         >
 			<span
@@ -64,7 +81,7 @@ const dispatch = createEventDispatcher<{
             >{user?.username || user?.email}</span
             >
             <button
-                   on:click={() =>signOut() || `${base}/`}
+                    on:click={() =>signOut() || `${base}/`}
                     type="submit"
                     class="ml-auto h-6 flex-none items-center gap-1.5 rounded-md border bg-white px-2 text-gray-700 shadow-sm group-hover:flex hover:shadow-none dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400 dark:hover:text-gray-300 md:hidden"
             >
@@ -72,19 +89,19 @@ const dispatch = createEventDispatcher<{
             </button>
         </div>
     {:else}
-    <div class="flex flex-row">
-        <a
-                href="{base}/signin"
-                rel="noreferrer"
-                class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-        >Login
-        </a>
-        <a
-                href="{base}/signup"
-                class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-        >Sign Up
-        </a></div>
-	{/if}
+        <div class="flex flex-row">
+            <a
+                    href="{base}/signin"
+                    rel="noreferrer"
+                    class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+            >Login
+            </a>
+            <a
+                    href="{base}/signup"
+                    class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+            >Sign Up
+            </a></div>
+    {/if}
 
     <div class="flex flex-row">
         <button
@@ -152,7 +169,7 @@ const dispatch = createEventDispatcher<{
                 title="Follow us on GitHub!"
                 target="_blank"
                 class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 justify-center"
-        ><img src="../chatui/socials/github.svg" alt="GitHub" class="h-4 w-4" >
+        ><img src="../chatui/socials/github.svg" alt="GitHub" class="h-4 w-4">
         </a>
         <a
                 href="https://groups.google.com/g/ares-community"

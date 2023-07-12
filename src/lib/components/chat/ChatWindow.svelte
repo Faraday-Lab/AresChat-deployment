@@ -1,6 +1,7 @@
 <script lang="ts">
     import type {Message} from "$lib/types/Message";
-    import {createEventDispatcher} from "svelte";
+    import {createEventDispatcher, onDestroy, onMount} from "svelte";
+    import { lock } from '$lib/lockStore';
 
     import {API_KEY} from "$lib/actions/API_KEY";
     import Swal from 'sweetalert2';
@@ -333,7 +334,18 @@
         })
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    let lockValue = false;
 
+    const unsubscribe = lock.subscribe((value) => {
+        lockValue = value;
+    });
+
+    onMount(() => {
+        return () => {
+            unsubscribe();
+        };
+    });
 </script>
 
 <div class="relative min-h-0 min-w-0">
@@ -375,8 +387,8 @@
                         on:click={() => dispatch("stop")}
                 />
             {/if}
-            <div class="absolute right-0">
-                <img src="" alt="lock">
+            <div class="absolute right-8 hidden" class:hidden={!lockValue}>
+                <img src="../chatui/lock.svg" alt="lock" class="w-5">
             </div>
         </div>
         <form
