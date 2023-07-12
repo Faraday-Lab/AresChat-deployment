@@ -335,11 +335,27 @@
                 const images = responseJSON.artifacts.map((image) =>
                     `data:image/png;base64,${image.base64}`
                 );
+                const imageContainer = document.createElement('div');
+                imageContainer.style.display = 'flex';
+                imageContainer.style.justifyContent = 'center';
+
                 images.forEach((imageUrl) => {
-                    Swal.fire({
-                       imageUrl: imageUrl
-                    })
-                })
+                    const imageElement = document.createElement('img');
+                    imageElement.src = imageUrl;
+                    imageElement.style.width = '400px';
+                    imageElement.style.height = 'auto';
+                    imageElement.style.borderRadius = '10px';
+                    imageElement.style.marginRight = '15px';
+                    imageContainer.appendChild(imageElement);
+                });
+
+                Swal.fire({
+                    title: 'Images',
+                    width: 1300,
+                    height: 600,
+                    html: imageContainer,
+                    showConfirmButton: true
+                });
                 })
                 .catch((error) => {
                 console.error(error);
