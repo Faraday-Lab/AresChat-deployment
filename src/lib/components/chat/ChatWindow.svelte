@@ -1,6 +1,7 @@
 <script lang="ts">
     import type {Message} from "$lib/types/Message";
-    import {createEventDispatcher} from "svelte";
+    import {createEventDispatcher, onDestroy, onMount} from "svelte";
+    import {lock} from '$lib/lockStore';
 
     import {API_KEY} from "$lib/actions/API_KEY";
     import Swal from 'sweetalert2';
@@ -264,6 +265,7 @@
                     confirmButtonText: "I have another question...",
                     allowOutsideClick: true,
                     customClass: {
+                        title: 'swal-white-title',
                         content: 'swal-answer',
                     },
                 }).then((innerResult) => {
@@ -276,16 +278,16 @@
         });
     }
 
-    function textImage(){
+    function textImage() {
         getImages()
     }
 
-	function getImages() {
-		Swal.fire({
+    function getImages() {
+        Swal.fire({
             title: 'Generate images!',
             input: 'text',
             inputPlaceholder: 'Type your prompt here...',
-			showCancelButton: true,
+            showCancelButton: true,
             confirmButtonText: 'Send',
             showLoaderOnConfirm: true,
             background: '#1f2937',
@@ -295,77 +297,72 @@
                 title: 'swal-white-title',
                 loader: 'swal-loading-spinner',
             },
-			preConfirm: (prompt) => {
+            preConfirm: (prompt) => {
                 Swal.fire({
                     didOpen: () => {
                         Swal.showLoading(Swal.getConfirmButton());
                     }
                 });
-				fetch(
-					`https://api.stability.ai/v1/generation/stable-diffusion-v1-5/text-to-image`,
-					{
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-							Accept: 'application/json',
-							Authorization: `sk-bMhuMy55knbw133npsyeXP78HOe2TKMArEGlbueyxiAxaWED`,
-						},
-						body: JSON.stringify({
-							text_prompts: [
-							{
-								text: prompt
-							},
-							],
-							cfg_scale: 7,
-							clip_guidance_preset: 'FAST_BLUE',
-							height: 512,
-							width: 512,
-							samples: 3,
-							steps: 30,
-						}),
-					}
-				)
-                .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`Non-200 response: ${response.text()}`);
-                }
-                return response.json();
-                })
-                .then((responseJSON) => {
-                const images = responseJSON.artifacts.map((image) =>
-                    `data:image/png;base64,${image.base64}`
-                );
-                const imageContainer = document.createElement('div');
-                imageContainer.style.display = 'flex';
-                imageContainer.style.justifyContent = 'center';
+                fetch(
+                    `https://api.stability.ai/v1/generation/stable-diffusion-v1-5/text-to-image`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Accept: 'application/json',
+                            Authorization: `sk-bMhuMy55knbw133npsyeXP78HOe2TKMArEGlbueyxiAxaWED`,
+                        },
+                        body: JSON.stringify({
+                            text_prompts: [
+                                {
+                                    text: prompt
+                                },
+                            ],
+                            cfg_scale: 7,
+                            clip_guidance_preset: 'FAST_BLUE',
+                            height: 512,
+                            width: 512,
+                            samples: 3,
+                            steps: 30,
+                        }),
+                    }
+                )
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error(`Non-200 response: ${response.text()}`);
+                        }
+                        return response.json();
+                    })
+                    .then((responseJSON) => {
+                        const images = responseJSON.artifacts.map((image) =>
+                            `data:image/png;base64,${image.base64}`
+                        );
+                        images.forEach((imageUrl) => {
+                            Swal.fire({
+                                imageUrl: imageUrl
+                            })
+                        })
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            },
 
-                images.forEach((imageUrl) => {
-                    const imageElement = document.createElement('img');
-                    imageElement.src = imageUrl;
-                    imageElement.style.width = '400px';
-                    imageElement.style.height = 'auto';
-                    imageElement.style.borderRadius = '10px';
-                    imageElement.style.marginRight = '15px';
-                    imageContainer.appendChild(imageElement);
-                });
-
-                Swal.fire({
-                    title: 'Images',
-                    width: 1300,
-                    height: 600,
-                    html: imageContainer,
-                    showConfirmButton: true
-                });
-                })
-                .catch((error) => {
-                console.error(error);
-                });
-			}
         })
-	}
+    }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    let lockValue = false;
 
+    const unsubscribe = lock.subscribe((value) => {
+        lockValue = value;
+    });
 
+    onMount(() => {
+        return () => {
+            unsubscribe();
+        };
+    });
 </script>
 
 <div class="relative min-h-0 min-w-0">
@@ -407,6 +404,9 @@
                         on:click={() => dispatch("stop")}
                 />
             {/if}
+            <div class="absolute right-8 hidden dark:text-white text-black" class:hidden={!lockValue}>
+                <img src="../chatui/lock.svg" alt="lock" class="w-5 stroke-black fill-current text-black">
+            </div>
         </div>
         <form
                 on:submit|preventDefault={handleSubmit}
@@ -595,13 +595,15 @@
                         }
                     </script>
                 </div>
+
                 <div>
-                    <button 
-                        type="button"
-                        on:click={textImage}>
-                        <img class="h-4 w-4 popup-img" src="../chatui/Paint.png" alt="Pinceau" >
+                    <button
+                            type="button"
+                            on:click={textImage}>
+                        <img class="h-4 w-4 popup-img" src="../chatui/Paint.png" alt="Pinceau">
                     </button>
-			    </div>
+                </div>
+
             </div>
         </form>
 
