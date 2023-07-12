@@ -284,13 +284,24 @@
 		Swal.fire({
             title: 'Generate images!',
             input: 'text',
-            inputLabel: 'Ask anything',
             inputPlaceholder: 'Type your prompt here...',
 			showCancelButton: true,
             confirmButtonText: 'Send',
             showLoaderOnConfirm: true,
+            background: '#1f2937',
+            color: 'white',
+            confirmButtonColor: '#059669',
+            customClass: {
+                title: 'swal-white-title',
+                loader: 'swal-loading-spinner',
+            },
 			preConfirm: (prompt) => {
-				return fetch(
+                Swal.fire({
+                    didOpen: () => {
+                        Swal.showLoading(Swal.getConfirmButton());
+                    }
+                });
+				fetch(
 					`https://api.stability.ai/v1/generation/stable-diffusion-v1-5/text-to-image`,
 					{
 						method: 'POST',
@@ -324,6 +335,11 @@
                 const images = responseJSON.artifacts.map((image) =>
                     `data:image/png;base64,${image.base64}`
                 );
+                images.forEach((imageUrl) => {
+                    Swal.fire({
+                       imageUrl: imageUrl
+                    })
+                })
                 })
                 .catch((error) => {
                 console.error(error);
@@ -563,14 +579,13 @@
                         }
                     </script>
                 </div>
-
-				<div>
-					<button 
+                <div>
+                    <button 
                         type="button"
                         on:click={textImage}>
-						<img class="h-4 w-4 popup-img" src="../chatui/Paint.png" alt="Pinceau" >
-					</button>
-				</div>
+                        <img class="h-4 w-4 popup-img" src="../chatui/Paint.png" alt="Pinceau" >
+                    </button>
+			    </div>
             </div>
         </form>
 
