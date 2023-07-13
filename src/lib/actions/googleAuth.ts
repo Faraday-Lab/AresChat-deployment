@@ -1,0 +1,1 @@
+export const VITE_GOOGLE_ID = import.meta.env.VITE_GOOGLEID;
