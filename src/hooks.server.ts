@@ -1,5 +1,7 @@
 import { COOKIE_NAME } from "$env/static/private";
 import type { Handle } from "@sveltejs/kit";
+// import { SvelteGoogleAuthHook } from 'svelte-google-auth/server';
+// import client_secret from "./client_secret.json";
 import {
 	PUBLIC_GOOGLE_ANALYTICS_ID,
 	PUBLIC_DEPRECATED_GOOGLE_ANALYTICS_ID,
@@ -15,6 +17,7 @@ import client_secret from "./client_secret.json";
 
 const auth = new SvelteGoogleAuthHook(client_secret.web);
 
+// const auth = new SvelteGoogleAuthHook(client_secret.web);
 export const handle: Handle = async ({ event, resolve }) => {
 	const token = event.cookies.get(COOKIE_NAME);
 
@@ -110,4 +113,5 @@ export const handle: Handle = async ({ event, resolve }) => {
 	});
 
 	return response;
+	// return await auth.handleAuth({ event, resolve });
 };
