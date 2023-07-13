@@ -1,9 +1,11 @@
 <script lang="ts">
     import {base} from "$app/paths";
     import {createEventDispatcher} from "svelte";
+
     import {invalidateAll} from '$app/navigation';
     import {signIn, signOut, initialize} from 'svelte-google-auth/client';
     import type {PageData} from "../../routes/$types";
+
     import Logo from "$lib/components/icons/Logo.svelte";
     import {switchTheme} from "$lib/switchTheme";
     import {PUBLIC_APP_NAME, PUBLIC_ORIGIN} from "$env/static/public";
@@ -115,6 +117,7 @@
             >
                 Sign Out
             </button>
+
         </div>
     {:else}
         <div class="flex flex-row">
