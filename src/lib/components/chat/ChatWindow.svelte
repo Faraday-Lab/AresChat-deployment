@@ -381,6 +381,7 @@
         })
 	}
 
+
     function downloadImages(images) {
     return new Promise((resolve, reject) => {
         const downloadPromises = images.map((imageUrl) => {
@@ -409,7 +410,12 @@
     });
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    let lockValue = false;
 
+    const unsubscribe = lock.subscribe((value) => {
+        lockValue = value;
+    });
 
 
     onMount(() => {

@@ -1,6 +1,5 @@
 import { COOKIE_NAME } from "$env/static/private";
 import type { Handle } from "@sveltejs/kit";
-// import { SvelteGoogleAuthHook } from 'svelte-google-auth/server';
 // import client_secret from "./client_secret.json";
 import {
 	PUBLIC_GOOGLE_ANALYTICS_ID,
@@ -15,9 +14,18 @@ import { ERROR_MESSAGES } from "$lib/stores/errors";
 import { SvelteGoogleAuthHook } from 'svelte-google-auth/server';
 import client_secret from "./client_secret.json";
 
-const auth = new SvelteGoogleAuthHook(client_secret.web);
+const auth = new SvelteGoogleAuthHook({
+    client_id: client_secret.web.client_id,
+    client_secret: client_secret.web.client_secret,
+    redirect_uris: client_secret.web.redirect_uris,
+    auth_uri: client_secret.web.auth_uri,
+    token_uri: client_secret.web.token_uri,
+    auth_provider_x509_cert_url: client_secret.web.auth_provider_x509_cert_url,
+    project_id: client_secret.web.project_id,
+    javascript_origins: client_secret.web.javascript_origins
+});
 
-// const auth = new SvelteGoogleAuthHook(client_secret.web);
+
 export const handle: Handle = async ({ event, resolve }) => {
 	const token = event.cookies.get(COOKIE_NAME);
 
@@ -111,7 +119,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 				.replace("%gaIdDeprecated%", PUBLIC_DEPRECATED_GOOGLE_ANALYTICS_ID);
 		},
 	});
-
+	console.log(auth);
+	await auth.handleAuth({ event, resolve });
 	return response;
-	// return await auth.handleAuth({ event, resolve });
 };
