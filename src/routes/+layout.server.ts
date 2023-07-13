@@ -86,6 +86,7 @@ export const load: LayoutServerLoad = async ({ locals, depends, url }) => {
 			email: locals.user.email,
 		},
 		requiresLogin: requiresUser,
+
 		...hydrateAuth(locals)
 	};
 };
