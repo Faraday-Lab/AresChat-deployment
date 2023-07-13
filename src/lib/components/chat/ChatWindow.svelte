@@ -5,7 +5,7 @@
 
     import {CHATPDF_API_KEY} from "$lib/actions/CHATPDF_API_KEY";
     import {NASA_API_KEY} from "$lib/actions/NASA_API_KEY";
-    import {API_KEY, STABILITY_KEY} from "$lib/actions/API_KEY";
+    import {STABILITY_KEY} from "$lib/actions/STABILITY_KEY";
     import Swal from 'sweetalert2';
 
     import CarbonSendAltFilled from "~icons/carbon/send-alt-filled";
