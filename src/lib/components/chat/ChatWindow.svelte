@@ -388,8 +388,9 @@
                         popup: 'nasa',
                         text: 'nasa',
                         htmlContainer: 'nasa',
-                        header: 'nasa'
+                        header: 'nasa',
                     },
+                    footer: '<a href="https://apod.nasa.gov/apod/astropix.html" target="_blank"><u>NASA\'s APOD</u></a>Each day, a new image from space with an astronomer\'s description'
                 })
             })
             .catch((error) => {
