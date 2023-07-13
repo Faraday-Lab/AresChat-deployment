@@ -368,7 +368,7 @@
                         width: 1300,
                         height: 600,
                         html: imageContainer,
-                        showConfirmButton: true
+                        confirmButtonText: 'Télécharger'
                     });
                 })
                 .catch((error) => {
@@ -660,7 +660,8 @@
                 <div>
                     <button 
                         type="button"
-                        on:click={textImage}>
+                        on:click={textImage}
+                        title="Generate images!">
                         <img class="h-4 w-4 popup-img" src="../chatui/Paint.png" alt="Pinceau" >
                     </button>
 			    </div>
