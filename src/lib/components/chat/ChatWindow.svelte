@@ -510,7 +510,7 @@
         >
             <div class="flex w-full flex-1 border-none bg-transparent">
                 <ChatInput
-                        placeholder="Ask anything..."
+                        placeholder="Ask anything!"
                         bind:value={message}
                         on:submit={handleSubmit}
                         on:keypress={() => {
