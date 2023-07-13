@@ -5,6 +5,7 @@
 
     import {CHATPDF_API_KEY} from "$lib/actions/CHATPDF_API_KEY";
     import {NASA_API_KEY} from "$lib/actions/NASA_API_KEY";
+    import {STABILITY_KEY} from "$lib/actions/STABILITY_KEY";
     import Swal from 'sweetalert2';
 
     import CarbonSendAltFilled from "~icons/carbon/send-alt-filled";
@@ -303,13 +304,13 @@
                     }
                 });
 				fetch(
-					`https://api.stability.ai/v1/generation/stable-diffusion-v1-5/text-to-image`,
+					`https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v0-9/text-to-image`,
 					{
 						method: 'POST',
 						headers: {
-							'Content-Type': 'application/json',
+						    'Content-Type': 'application/json',
 							Accept: 'application/json',
-							Authorization: `sk-bMhuMy55knbw133npsyeXP78HOe2TKMArEGlbueyxiAxaWED`,
+							Authorization: STABILITY_KEY,
 						},
 						body: JSON.stringify({
 							text_prompts: [
@@ -333,30 +334,42 @@
                 return response.json();
                 })
                 .then((responseJSON) => {
-                const images = responseJSON.artifacts.map((image) =>
-                    `data:image/png;base64,${image.base64}`
-                );
-                const imageContainer = document.createElement('div');
-                imageContainer.style.display = 'flex';
-                imageContainer.style.justifyContent = 'center';
 
-                images.forEach((imageUrl) => {
-                    const imageElement = document.createElement('img');
-                    imageElement.src = imageUrl;
-                    imageElement.style.width = '400px';
-                    imageElement.style.height = 'auto';
-                    imageElement.style.borderRadius = '10px';
-                    imageElement.style.marginRight = '15px';
-                    imageContainer.appendChild(imageElement);
-                });
+                    interface ImageArtifact {
+                    base64: string;
+                    seed: number;
+                    finishReason: string;
+                }
 
-                Swal.fire({
-                    title: 'Images',
-                    width: 1300,
-                    height: 600,
-                    html: imageContainer,
-                    showConfirmButton: true
-                });
+                    interface GenerationResponse {
+                        artifacts: ImageArtifact[];
+                    }
+                
+                    const images = responseJSON.artifacts.map((image: ImageArtifact) =>
+                        `data:image/png;base64,${image.base64}`
+                    );
+
+                    const imageContainer = document.createElement('div');
+                    imageContainer.style.display = 'flex';
+                    imageContainer.style.justifyContent = 'center';
+
+                    images.forEach((imageUrl) => {
+                        const imageElement = document.createElement('img');
+                        imageElement.src = imageUrl;
+                        imageElement.style.width = '400px';
+                        imageElement.style.height = 'auto';
+                        imageElement.style.borderRadius = '10px';
+                        imageElement.style.marginRight = '15px';
+                        imageContainer.appendChild(imageElement);
+                    });
+
+                    Swal.fire({
+                        title: 'Images',
+                        width: 1300,
+                        height: 600,
+                        html: imageContainer,
+                        showConfirmButton: true
+                    });
                 })
                 .catch((error) => {
                 console.error(error);
