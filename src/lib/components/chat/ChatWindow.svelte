@@ -5,7 +5,6 @@
 
     import {CHATPDF_API_KEY} from "$lib/actions/CHATPDF_API_KEY";
     import {NASA_API_KEY} from "$lib/actions/NASA_API_KEY";
-    import {STABILITY_KEY} from "$lib/actions/STABILITY_KEY";
     import Swal from 'sweetalert2';
 
     import CarbonSendAltFilled from "~icons/carbon/send-alt-filled";
@@ -310,7 +309,7 @@
 						headers: {
 						    'Content-Type': 'application/json',
 							Accept: 'application/json',
-							Authorization: STABILITY_KEY,
+							Authorization: 'sk-bMhuMy55knbw133npsyeXP78HOe2TKMArEGlbueyxiAxaWED',
 						},
 						body: JSON.stringify({
 							text_prompts: [
@@ -368,8 +367,12 @@
                         width: 1300,
                         height: 600,
                         html: imageContainer,
-                        confirmButtonText: 'Télécharger'
-                    });
+                        confirmButtonText: 'Télécharger',
+                        showLoaderOnConfirm: true,
+                        preConfirm: () => {
+                            return downloadImages(images);
+                        }
+                    })
                 })
                 .catch((error) => {
                 console.error(error);
@@ -377,6 +380,34 @@
 			}
         })
 	}
+
+    function downloadImages(images) {
+    return new Promise((resolve, reject) => {
+        const downloadPromises = images.map((imageUrl) => {
+        return new Promise((resolve, reject) => {
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            link.download = 'image.png';
+            link.target = '_blank';
+            link.addEventListener('click', () => {
+            link.parentNode.removeChild(link);
+            resolve();
+            }, { once: true });
+
+            document.body.appendChild(link);
+            link.click();
+        });
+        });
+
+        Promise.all(downloadPromises)
+        .then(() => {
+            resolve(); 
+        })
+        .catch((error) => {
+            reject(error); 
+        });
+    });
+    }
 
 
 
