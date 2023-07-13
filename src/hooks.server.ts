@@ -15,14 +15,20 @@ import { SvelteGoogleAuthHook } from 'svelte-google-auth/server';
 import client_secret from "./client_secret.json";
 
 const auth = new SvelteGoogleAuthHook({
-    client_id: client_secret.web.client_id,
-    client_secret: client_secret.web.client_secret,
-    redirect_uris: client_secret.web.redirect_uris,
-    auth_uri: client_secret.web.auth_uri,
-    token_uri: client_secret.web.token_uri,
-    auth_provider_x509_cert_url: client_secret.web.auth_provider_x509_cert_url,
-    project_id: client_secret.web.project_id,
-    javascript_origins: client_secret.web.javascript_origins
+    client_id: "746142593375-4bbme2dbm4m68jfgj0q86vfgkj19b29m.apps.googleusercontent.com",
+    client_secret: "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",
+    redirect_uris: [
+		"http://localhost:5173/_auth/callback",
+		"http://localhost:5173/login/callback",
+		"http://localhost:5173/_auth"
+	],
+    auth_uri: "https://accounts.google.com/o/oauth2/auth",
+    token_uri: "https://oauth2.googleapis.com/token",
+    auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+    project_id: "ares-login",
+    javascript_origins: [
+		"http://localhost:5173"
+	]
 });
 
 
@@ -119,7 +125,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 				.replace("%gaIdDeprecated%", PUBLIC_DEPRECATED_GOOGLE_ANALYTICS_ID);
 		},
 	});
-	console.log(auth);
 	await auth.handleAuth({ event, resolve });
+	// console.log(auth.handleAuth({ event, resolve }));
+	// console.log(data.client_id);
 	return response;
 };
