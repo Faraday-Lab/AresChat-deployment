@@ -40,7 +40,7 @@
 				</div>
 			</div>
 			<p class="text-base text-gray-600 dark:text-gray-400">
-				Making the community's best AI chat models available to everyone.
+				Making all in one <em>(text, sound, image)</em> AI available for everyone, everywhere.
 			</p>
 		</div>
 	</div>

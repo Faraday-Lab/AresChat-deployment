@@ -45,6 +45,7 @@ export const load: LayoutServerLoad = async ({ locals, depends, url }) => {
 	}
 
 	return {
+
 		conversations: await conversations
 			.find(authCondition(locals))
 			.sort({ updatedAt: -1 })
@@ -86,7 +87,7 @@ export const load: LayoutServerLoad = async ({ locals, depends, url }) => {
 			email: locals.user.email,
 		},
 		requiresLogin: requiresUser,
+		hydrateAuth: hydrateAuth(locals),
 
-		...hydrateAuth(locals)
 	};
 };

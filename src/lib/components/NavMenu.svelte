@@ -13,7 +13,7 @@
     import type {LayoutData} from "../../routes/$types";
     import Swal from "sweetalert2";
     // import lock from "$lib/components/chat/ChatWindow.svelte";
-    import { lock } from '../../lib/lockStore';
+    import { lock } from '$lib/lockStore';
 
     export let data: PageData;
     initialize(data, invalidateAll);
