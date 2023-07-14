@@ -45,6 +45,11 @@
 }
 
 .nasa-title {
-	color: white;
+	color: white !important;
 	font-size: 1.48rem;
+}
+
+.chatpdf {
+	height: 98vh !important;
+	color: white !important;
 }

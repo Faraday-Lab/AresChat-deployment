@@ -210,20 +210,19 @@
         let qstn;
 
         Swal.fire({
-            title: 'Question your file!',
+            title: '<span style="color: white">Question your file!</span>',
             input: 'text',
             inputLabel: 'What is your question?',
             inputPlaceholder: 'Type your question here...',
             showCancelButton: true,
             confirmButtonText: 'Send',
             showLoaderOnConfirm: true,
+            width: '100%',
+            // height: 1080,
             background: '#1f2937',
             color: 'white',
             confirmButtonColor: '#059669',
-            customClass: {
-                title: 'swal-white-title',
-                loader: 'swal-loading-spinner',
-            },
+            customClass: 'chatpdf swal-white-title swal-loading-spinner',
             preConfirm: (question) => {
                 qstn = question;
                 console.log(question);
@@ -510,7 +509,7 @@
         >
             <div class="flex w-full flex-1 border-none bg-transparent">
                 <ChatInput
-                        placeholder="Ask anything..."
+                        placeholder="Ask anything!"
                         bind:value={message}
                         on:submit={handleSubmit}
                         on:keypress={() => {
