@@ -1,6 +1,5 @@
-import { COOKIE_NAME } from "$env/static/private";
+import { COOKIE_NAME, MESSAGES_BEFORE_LOGIN } from "$env/static/private";
 import type { Handle } from "@sveltejs/kit";
-// import client_secret from "./client_secret.json";
 import {
 	PUBLIC_GOOGLE_ANALYTICS_ID,
 	PUBLIC_DEPRECATED_GOOGLE_ANALYTICS_ID,
@@ -11,26 +10,6 @@ import { collections } from "$lib/server/database";
 import { base } from "$app/paths";
 import { refreshSessionCookie, requiresUser } from "$lib/server/auth";
 import { ERROR_MESSAGES } from "$lib/stores/errors";
-import { SvelteGoogleAuthHook } from 'svelte-google-auth/server';
-import client_secret from "./client_secret.json";
-
-const auth = new SvelteGoogleAuthHook({
-    client_id: "746142593375-4bbme2dbm4m68jfgj0q86vfgkj19b29m.apps.googleusercontent.com",
-    client_secret: "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",
-    redirect_uris: [
-		"http://localhost:5173/_auth/callback",
-		"http://localhost:5173/login/callback",
-		"http://localhost:5173/_auth"
-	],
-    auth_uri: "https://accounts.google.com/o/oauth2/auth",
-    token_uri: "https://oauth2.googleapis.com/token",
-    auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
-    project_id: "ares-login",
-    javascript_origins: [
-		"http://localhost:5173"
-	]
-});
-
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const token = event.cookies.get(COOKIE_NAME);
@@ -85,7 +64,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 		!event.url.pathname.startsWith(`${base}/admin`) &&
 		!["GET", "OPTIONS", "HEAD"].includes(event.request.method)
 	) {
-		if (!user && requiresUser) {
+		if (
+			!user &&
+			requiresUser &&
+			!((MESSAGES_BEFORE_LOGIN ? parseInt(MESSAGES_BEFORE_LOGIN) : 0) > 0)
+		) {
 			return errorResponse(401, ERROR_MESSAGES.authOnly);
 		}
 
@@ -125,8 +108,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 				.replace("%gaIdDeprecated%", PUBLIC_DEPRECATED_GOOGLE_ANALYTICS_ID);
 		},
 	});
-	await auth.handleAuth({ event, resolve });
-	// console.log(auth.handleAuth({ event, resolve }));
-	// console.log(data.client_id);
+
 	return response;
 };
