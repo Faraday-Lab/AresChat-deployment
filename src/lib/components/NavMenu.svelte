@@ -87,41 +87,90 @@
         >Subscribe to AresChat Pro!
         </a>
     </div>
-    <button
-            type="button"
-            class="flex h-9 flex-none items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+    <a
+            href="{base}/apikey"
+            rel="noreferrer"
+            class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-emerald-500 hover:bg-gray-100 dark:text-emerald-600 dark:hover:bg-gray-700"
     >
-        GET AresChat API
-    </button>
-    <button
-            on:click={switchTheme}
-            type="button"
-            class="flex h-9 flex-none items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-    >
-        Theme
-    </button>
+        Get AresChat API
+    </a>
+    <div class="flex flex-row">
+        <button
+                on:click={switchTheme}
+                type="button"
+                class="flex flex-1 h-9 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+        >
+            Theme
+        </button>
 
-    <button
-            on:click={() => dispatch("clickSettings")}
-            type="button"
-            class="flex h-9 flex-none items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-    >
-        Settings
-    </button>
-    {#if PUBLIC_APP_NAME === "HuggingChat"}
+        <button
+                on:click={() => dispatch("clickSettings")}
+                type="button"
+                class="flex flex-1 h-9 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+        >
+            Settings
+        </button>
+    </div>
+    <div class="flex flex-row">
         <a
-                href="https://huggingface.co/spaces/huggingchat/chat-ui/discussions"
+                href="https://huggingface.co/spaces/Faradaylab/areschat/discussions"
                 target="_blank"
                 rel="noreferrer"
-                class="flex h-9 flex-none items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-        >
-            Feedback
+                class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+        >Feedback
         </a>
         <a
+                href="{base}/about"
+                class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+        >About
+        </a></div>
+    <div class="flex flex-row">
+        <a
                 href="{base}/privacy"
-                class="flex h-9 flex-none items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-        >
-            About & Privacy
+                class="flex flex-1 h-9 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+        >Privacy
         </a>
-    {/if}
+        <a
+                href="{base}/terms"
+                class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+        >Terms of Service
+        </a>
+    </div>
+    <div class="flex flex-row">
+        <a
+                href="https://huggingface.co/Faradaylab"
+                title="Our HuggingFace Space!"
+                target="_blank"
+                class="flex flex-1 h-9 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 justify-center"
+        ><img src="../chatui/socials/hf.svg" alt="HuggingFace Space" class="h-4 w-4">
+        </a>
+        <a
+                href="https://twitter.com/areschatlab"
+                title="Follow us on Twitter!"
+                target="_blank"
+                class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 justify-center"
+        ><img src="../chatui/socials/twitter.svg" alt="Twitter" class="h-4 w-4">
+        </a>
+        <a
+                href="https://discord.gg/j4cvbAsm"
+                title="Join our Discord!"
+                target="_blank"
+                class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 justify-center"
+        ><img src="../chatui/socials/discord.svg" alt="Discord" class="h-4 w-4">
+        </a>
+        <a
+                href="https://github.com/Faraday-Lab"
+                title="Follow us on GitHub!"
+                target="_blank"
+                class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 justify-center"
+        ><img src="../chatui/socials/github.svg" alt="GitHub" class="h-4 w-4">
+        </a>
+        <a
+                href="https://groups.google.com/g/ares-community"
+                title="Join our Community Group on Google!"
+                target="_blank"
+                class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 justify-center"
+        ><img src="../chatui/socials/google.svg" alt="Google Group" class="h-4 w-4">
+        </a>
+    </div>
 </div>
