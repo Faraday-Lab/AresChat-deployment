@@ -8,6 +8,8 @@
     import NavConversationItem from "./NavConversationItem.svelte";
     import type { LayoutData } from "../../routes/$types";
 
+    export let isPro = false;
+
     const dispatch = createEventDispatcher<{
         shareConversation: { id: string; title: string };
         clickSettings: void;
@@ -27,6 +29,20 @@
     onMount(()=>{
         username = localStorage.getItem('username') || '';
     });
+
+    export let urlPricing;
+    if (username) {
+        urlPricing = base + "/pricing";
+    } else {
+        urlPricing = base + "/signin";
+    }
+
+    export let urlApiKey;
+    if (username) {
+        urlApiKey = base + "/apikey";
+    } else {
+        urlApiKey = base + "/signin"
+    }
 </script>
 
 <div class="sticky top-0 flex flex-none items-center justify-between px-3 py-3.5 max-sm:pt-0">
@@ -84,15 +100,27 @@
             </a></div>
     {/if}
     <div class="flex flex-row font-bold">
-        <a
-                href="{base}/pricing"
-                rel="noreferrer"
-                class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-emerald-500 hover:bg-gray-100 dark:text-emerald-600 dark:hover:bg-gray-700"
-        >Subscribe to AresChat Pro!
-        </a>
+
+            {#if isPro}
+                <button
+                        rel="noreferrer"
+                        class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-emerald-500 hover:bg-gray-100 dark:text-emerald-600 dark:hover:bg-gray-700"
+                >
+            🌟 AresChat Pro
+                </button>
+                {:else}
+                <a
+                        href="{urlPricing}"
+                        rel="noreferrer"
+                        class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-emerald-500 hover:bg-gray-100 dark:text-emerald-600 dark:hover:bg-gray-700"
+                >
+                    Subscribe to AresChat Pro!
+                </a>
+                {/if}
+
     </div>
     <a
-            href="{base}/apikey"
+            href="{urlApiKey}"
             rel="noreferrer"
             class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-emerald-500 hover:bg-gray-100 dark:text-emerald-600 dark:hover:bg-gray-700"
     >

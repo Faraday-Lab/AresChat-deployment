@@ -4,32 +4,36 @@
 
     let email = "";
     let password = "";
+    let confirm_password = "";
 
     async function handleSubmit() {
-        console.log({email});
-        const url = 'https://auth-pearl-nine.vercel.app/api/reset-password'
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Methods': '*',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': '*',
-            },
-            body: JSON.stringify({email, }),
-        });
+        if (password == confirm_password) {
+            console.log({email});
+            const url = 'https://auth-pearl-nine.vercel.app/api/reset-password'
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Methods': '*',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': '*',
+                },
+                body: JSON.stringify({email, }),
+            });
 
-        if (response.ok) {
-            const data = await response.json();
-            console.log(data.message);
-            localStorage.setItem('username', email);
-            // @ts-ignore
-            window.location.href = '/signin';
-        }else {
-            const error = await response.json();
-            console.log(error.error);
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data.message);
+                localStorage.setItem('username', email);
+                // @ts-ignore
+                window.location.href = '/signin';
+            }else {
+                const error = await response.json();
+                console.log(error.error);
+            }
+        } else {
+            alert('Wrong password confirmation. Please try again.')
         }
-
     }
 
 </script>
@@ -43,16 +47,16 @@
 
             <div class="mt-4 flex items-center justify-between">
                 <span class="border-b w-1/5 lg:w-1/4"></span>
-                <span class="text-xs text-center text-gray-500 uppercase">Enter Your personnal Information</span>
+                <span class="text-xs text-center text-gray-500 uppercase">Enter your personal Information</span>
                 <span class="border-b w-1/5 lg:w-1/4"></span>
             </div>
             <div class="mt-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2">New Password</label>
-                <input name="email" bind:value={password} class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="email" required/>
+                <input name="password" bind:value={password} class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="password" required/>
             </div>
             <div class="mt-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2">Confirm Password</label>
-                <input name="email" bind:value={password} class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="email" required/>
+                <input name="confirm_password" bind:value={confirm_password} class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="password" required/>
             </div>
 
             <div class="mt-8">

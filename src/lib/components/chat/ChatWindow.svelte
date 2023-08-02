@@ -2,6 +2,7 @@
     import type {Message} from "$lib/types/Message";
     import {createEventDispatcher, onMount} from "svelte";
     import {lock} from '$lib/lockStore';
+    import isPro from "$lib/components/NavMenu.svelte"
 
     import {CHATPDF_API_KEY} from "$lib/actions/CHATPDF_API_KEY";
     import {NASA_API_KEY} from "$lib/actions/NASA_API_KEY";
@@ -358,8 +359,14 @@
     }
 
     function generateImages(prompt) {
+        let version;
+        if (isPro) {
+            version = "v1-0";
+        } else {
+            version = "v0-9";
+        }
         fetch(
-            `https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v0-9/text-to-image`,
+            `https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-${version}/text-to-image`,
             {
                 method: 'POST',
                 headers: {
