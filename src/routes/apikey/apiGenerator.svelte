@@ -38,14 +38,14 @@
       border-radius: 8px;
       cursor: pointer;
       /* Neon glow effect */
-      box-shadow: 0 0 10px #39ff14, 0 0 10px #39ff14, 0 0 10px #39ff14, 0 0 10px #39ff14, 0 0 10px #39ff14, 0 0 10px #39ff14;
+      box-shadow: 0 0 8px #39ff14, 0 0 8px #39ff14, 0 0 8px #39ff14, 0 0 8px #39ff14, 0 0 8px #39ff14, 0 0 8px #39ff14;
       /* Transition for smooth hover animation */
       transition: box-shadow 0.3s ease-in-out;
     }
   
     /* Hover state for the button */
     .neon-green-btn:hover {
-      box-shadow: 0 0 10px #39ff14, 0 0 10px #39ff14, 0 0 10px #39ff14, 0 0 80px #39ff14, 0 0 10px #39ff14, 0 0 10px #39ff14;
+      box-shadow: 0 0 8px #39ff14, 0 0 8px #39ff14, 0 0 8px #39ff14, 0 0 80px #39ff14, 0 0 8px #39ff14, 0 0 8px #39ff14;
     }
 </style>
 
