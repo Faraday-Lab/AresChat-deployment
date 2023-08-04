@@ -16,6 +16,7 @@ export default {
 			// fontFamily: {
 			// 	sans: ['"Inter"', ...defaultTheme.fontFamily.sans]
 			// },
+			safelist: ['stripe-pricing-table'],
 			fontSize: {
 				xxs: "0.625rem",
 				smd: "0.94rem",
