@@ -2,13 +2,23 @@
     import { onMount } from "svelte";
     import {base} from "$app/paths";
 
-    let email = "";
+    let email: string | null = null; // initialisez avec null au lieu de ""
     let password = "";
     let confirm_password = "";
 
+    // console.log(email)
+
+    onMount(() => {
+        // Récupérer l'email stocké dans le localStorage et l'assigner à la variable email
+        email = localStorage.getItem('username');
+        console.log(email)
+    });
+
     async function handleSubmit() {
         if (password == confirm_password) {
-            console.log({email});
+            // console.log(localStorage);
+            // console.log({email});
+            // return;
             const url = 'https://auth-pearl-nine.vercel.app/api/reset-password'
             const response = await fetch(url, {
                 method: 'POST',
@@ -18,13 +28,13 @@
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Headers': '*',
                 },
-                body: JSON.stringify({email, }),
+                body: JSON.stringify({email, password}),
             });
 
             if (response.ok) {
                 const data = await response.json();
                 console.log(data.message);
-                localStorage.setItem('username', email);
+                // localStorage.setItem('username', email);
                 // @ts-ignore
                 window.location.href = '/signin';
             }else {

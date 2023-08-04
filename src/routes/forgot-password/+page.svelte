@@ -4,10 +4,12 @@
     import {base} from "$app/paths";
 
     let email = "";
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let password = "";
 
     async function handleSubmit() {
-        console.log({email});
+        localStorage.setItem('username', email);
+        console.log(localStorage.getItem('username'));
         const url = 'https://auth-pearl-nine.vercel.app/api/forgot-password'
         const response = await fetch(url, {
             method: 'POST',
@@ -23,8 +25,10 @@
         if (response.ok) {
             const data = await response.json();
             console.log(data.message);
-            localStorage.setItem('username', email);
+
+            console.log(localStorage.getItem('username'));
             // @ts-ignore
+            alert('An email has been sent to help you reset your password.');
             window.location.href = '/';
         }else {
             const error = await response.json();
