@@ -8,20 +8,21 @@ import { ObjectId } from "mongodb";
 import { z } from "zod";
 import type { WebSearch } from "$lib/types/WebSearch";
 import { generateQuery } from "$lib/server/websearch/generateQuery";
-import { parseWeb } from "$lib/server/websearch/parseWeb";
+// import { parseWeb } from "$lib/server/websearch/parseWeb";
 import { summarizeWeb } from "$lib/server/websearch/summarizeWeb";
 
-interface GenericObject {
-	[key: string]: GenericObject | unknown;
-}
+// interface GenericObject {
+// 	[key: string]: GenericObject | unknown;
+// }
 
-function removeLinks(obj: GenericObject) {
-	for (const prop in obj) {
-		if (prop.endsWith("link")) delete obj[prop];
-		else if (typeof obj[prop] === "object") removeLinks(obj[prop] as GenericObject);
-	}
-	return obj;
-}
+// function removeLinks(obj: GenericObject) {
+// 	for (const prop in obj) {
+// 		if (prop.endsWith("link")) delete obj[prop];
+// 		else if (typeof obj[prop] === "object") removeLinks(obj[prop] as GenericObject);
+// 	}
+// 	return obj;
+// }
+// @ts-ignore
 export async function GET({ params, locals, url }) {
 	const model = defaultModel;
 	const convId = new ObjectId(params.id);
@@ -75,31 +76,28 @@ export async function GET({ params, locals, url }) {
 				const results = await searchWeb(webSearch.searchQuery);
 
 				let text = "";
-				webSearch.results =
-					(results.organic_results &&
-						results.organic_results.map((el: { link: string }) => el.link)) ??
-					[];
+				webSearch.results = results;
 
-				if (results.answer_box) {
-					// if google returns an answer box, we use it
-					webSearch.answerBox = JSON.stringify(removeLinks(results.answer_box));
-					text = webSearch.answerBox;
-					appendUpdate("Found a Google answer box");
-				} else if (results.knowledge_graph) {
-					// if google returns a knowledge graph, we use it
-					webSearch.knowledgeGraph = JSON.stringify(removeLinks(results.knowledge_graph));
-					text = webSearch.knowledgeGraph;
-					appendUpdate("Found a Google knowledge page");
-				} else if (webSearch.results.length > 0) {
-					// otherwise we use the top result from search
-					const topUrl = webSearch.results[0];
-					appendUpdate("Browsing first result", [JSON.stringify(topUrl)]);
-
-					text = await parseWeb(topUrl);
-					if (!text) throw new Error("text of the webpage is null");
-				} else {
-					throw new Error("No results found for this search query");
-				}
+				// if (results.answer_box) {
+				// 	// if google returns an answer box, we use it
+				// 	webSearch.answerBox = JSON.stringify(removeLinks(results.answer_box));
+				// 	text = webSearch.answerBox;
+				// 	appendUpdate("Found a Google answer box");
+				// } else if (results.knowledge_graph) {
+				// 	// if google returns a knowledge graph, we use it
+				// 	webSearch.knowledgeGraph = JSON.stringify(removeLinks(results.knowledge_graph));
+				// 	text = webSearch.knowledgeGraph;
+				// 	appendUpdate("Found a Google knowledge page");
+				// } else if (webSearch.results.length > 0) {
+				// 	// otherwise we use the top result from search
+				// 	const topUrl = webSearch.results[0];
+				// 	appendUpdate("Browsing first result", [JSON.stringify(topUrl)]);
+				//
+				// 	text = await parseWeb(topUrl);
+				// 	if (!text) throw new Error("text of the webpage is null");
+				// } else {
+				// 	throw new Error("No results found for this search query");
+				// }
 
 				appendUpdate("Creating summary");
 				webSearch.summary = await summarizeWeb(text, webSearch.searchQuery, model);
