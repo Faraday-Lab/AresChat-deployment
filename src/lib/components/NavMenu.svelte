@@ -30,6 +30,10 @@
         username = localStorage.getItem('username') || '';
     });
 
+    function toPro() {
+        isPro = true;
+    }
+
 </script>
 
 <div class="sticky top-0 flex flex-none items-center justify-between px-3 py-3.5 max-sm:pt-0">
@@ -99,6 +103,7 @@
                     {#if username}
                 <a
                         href="{base}/pricing"
+                        on:click={toPro}
                         rel="noreferrer"
                         class="flex h-9 flex-1 items-center gap-1.5 rounded-lg pl-3 pr-2 text-emerald-500 hover:bg-gray-100 dark:text-emerald-600 dark:hover:bg-gray-700"
                 >
