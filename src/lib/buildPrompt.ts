@@ -40,7 +40,7 @@ export async function buildPrompt(
 		if (webSearch.summary) {
 			webPrompt =
 				model.assistantMessageToken +
-				`The following context was found while searching the internet: ${webSearch.summary}` +
+				`The following context was found while searching the internet: ${webSearch.summary}`+ "Cite sources as [1] or [2] or [3] after each sentence (not just the very end) to back up your answer (Ex: Correct: [1], Correct: [2][3], Incorrect: [1, 2]) based on the links you have found to generate the query." +
 				model.messageEndToken;
 		}
 	}
